@@ -8,40 +8,37 @@
 using namespace arma;
 using namespace std;
 
-vec gaussian_elim(vec a, vec b, vec c, vec btilde) {
+vec gaussian_elim(vec a, vec b, vec c, vec d) {
 
     int n = size(b)(0);
 
     vec v(n);
+    vec btilde(n);
     vec dtilde(n);
-    vec ytilde(n);
+    vec dtt(n);
 
-    dtilde(0) = b(0);
-    ytilde(0) = btilde(0);
+    btilde(0) = b(0);
+    dtilde(0) = d(0);
 
     for (int i = 1; i < n; i++) {
-        dtilde(i) = b(i) - c(i-1)*c(i-1)/dtilde(i-1);
-        ytilde(i) = btilde(i) - c(i-1)*ytilde(i-1)/dtilde(i-1);
+        btilde(i) = b(i) - a(i-1)*c(i-1)/btilde(i-1);
+        dtilde(i) = d(i) - a(i-1)*dtilde(i-1)/btilde(i-1);
     }
 
-    v(n-1) = ytilde(n-1)/dtilde(n-1);
+    v(n-1) = dtilde(n-1)/btilde(n-1);
+    dtt(n-1) = dtilde(n-1);
 
-    for (int j = n-2; j >= 1; j--) {
-        v(j) = ( ytilde(j) - c(j)*v(j+1)/dtilde(j+1))/dtilde(j);
+    for (int j = n-2; j >= 0; j--) {
+        dtt(j) = dtilde(j) - c(j)*dtt(j+1)/btilde(j+1);
+        v(j) = dtt(j)/btilde(j);
     }
 
     return v;
 }
 
-vec gaussian_special(int n, vec btilde, float a, float b, float c) {
+vec gaussian_special(int n, vec btilde, float ac, float b) {
     vec v(n);
-    float ytilde = btilde(0);
-    float ytilde1 = 0;  //ytilde1 er ytilde(i+1). ytilde er ytilde(i)
-    v(n-1) = ytilde(n-1)/(-(n)/(n-1.));
-    for (int i = n-2; i >= 0; i--) {
-        ytilde1 = btilde(i+1) - c*ytilde/(-(i + 1.)/i);
-        v(i) = (ytilde - c*v(i+1)/(-(i+2.)/(i+1.)));
-        ytilde = ytilde1;
+
 
     }
 
@@ -57,19 +54,15 @@ int main()
     cin >> n;
 
     float h = 1./(n+1);
-    /*
+
     vec a = -1*ones<vec>(n-1);
     vec b = 2*ones<vec>(n);
     vec c = -1*ones<vec>(n-1);
-    */
-    float a = -1;
-    float b = 2;
-    float c = -1;
+
     vec x = linspace<vec>(0, 1, n);
     vec f = h*h*100*exp(-10*x);
 
-    vec data = gaussian_special(n, f, a, b, c);
-
+    vec data = gaussian_elim(a, b, c, f);
     cout << data << endl;
 
     return 0;
