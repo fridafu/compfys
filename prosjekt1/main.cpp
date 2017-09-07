@@ -36,12 +36,25 @@ vec gaussian_elim(vec a, vec b, vec c, vec d) {
     return v;
 }
 
-vec gaussian_special(int n, vec btilde, float ac, float b) {
+vec gaussian_special(int n, vec d) {
     vec v(n);
+    vec dtt(n);
+    vec dtilde(n);
 
+    dtilde(0) = d(0);
+
+    for (int i = 1; i<n; i++) {
+        dtilde(i) = d(i) + dtilde(i-1)/((i+1.)/i);
 
     }
 
+    v(n-1) = dtilde(n-1)/((n+1.)/n);
+    dtt(n-1) = dtilde(n-1);
+
+    for (int j = n-2; j >= 0; j--) {
+        dtt(j) = dtilde(j) + dtt(j+1)/((j+3.)/(j+2));
+        v(j) = dtt(j)/((j+2.)/(j+1));
+    }
     return v;
 
 }
@@ -62,7 +75,9 @@ int main()
     vec x = linspace<vec>(0, 1, n);
     vec f = h*h*100*exp(-10*x);
 
-    vec data = gaussian_elim(a, b, c, f);
+    //vec data = gaussian_elim(a, b, c, f);
+    vec data = gaussian_special(n, f);
+
     cout << data << endl;
 
     return 0;
