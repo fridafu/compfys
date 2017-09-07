@@ -10,7 +10,7 @@ using namespace std;
 
 vec gaussian_elim(vec a, vec b, vec c, vec d) {
 
-    int n = size(b)(0);
+    int n = size(b,0);
 
     vec v(n);
     vec btilde(n);
