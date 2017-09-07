@@ -21,5 +21,5 @@ for nn in n:
 
 xlabel('$x_i$')
 ylabel('$v(x_i)$')
-legend(['10', '100', '1000'])
+legend(['n = 10', 'n = 100', 'n = 1000'])
 show()
