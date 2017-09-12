@@ -121,7 +121,7 @@ int main()
     myfile.open("/Users/stianbilek/Documents/Python Scripts/n" + to_string(n) +".txt");
 
     for (int i = 0; i < n; i++) {
-        myfile << data(i) << endl;
+        myfile << data1(i) << endl;
     }
 
     myfile.close();
