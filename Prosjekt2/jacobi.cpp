@@ -153,6 +153,7 @@ vector<double> get_eigenvals(mat a,int n){
 
 //find maximum non-diag matrix elements
 void find_max(mat a,int& p,int& q,double& apq,int n){
+    apq = 0;
     for (int i=0;i<n;i++){
          for (int j=0;j<n;j++){
             if(i!=j && abs(a(i,j))>=abs(apq)){
@@ -211,7 +212,7 @@ int main(){
             }
         }
     }
-    int jac = jacobi(10, false, eps, 1, Amat, v);
+    int jac = jacobi(n, false, eps, 1, Amat, v);
     mat first_three_vectors = get_eigenvecs(Amat, v, n);
     cout << endl;
     first_three_vectors.print();
@@ -220,5 +221,6 @@ int main(){
 /*  NEED TO COMPARE WITH ARMADILLOSOLVER
     vec ADsolver = eig_sys(Amat, v, n);
 */
+    Amat.print();
     return 0;
 }
