@@ -25,9 +25,11 @@ mat makeA(double rho_min, double rho_max, int n, bool interact, double wr) {
         double rho = (i+1)*h;
         // Coulomb or not?
         if (interact) {
-            V = wr*wr*rho*rho + 1/(rho);
+            V = wr*wr*rho*rho + 1./(rho);
+            cout << "YEY" <<endl;
         } else {
             V = rho*rho;
+            cout << "NOOO" << endl;
         }
 
        // V-diagonal
@@ -38,7 +40,9 @@ mat makeA(double rho_min, double rho_max, int n, bool interact, double wr) {
            A(i+1,i) = e;
         }
     }
+    //A.print();
     return A;
+
 }
 
 
@@ -194,13 +198,16 @@ int main(){
     double eps = 1e-8;
     double rho_min = 0;
     double rho_max;
+    double wr;
     double n;
     cout << "Gimme an n: " ;
     cin >> n;
     cout << "Gimme a rho_max: (5 is good) ";
     cin >> rho_max;
-    mat Amat = makeA(rho_min, rho_max, n, false, 1);
-    Amat.print();
+    cout << "Gimme an wr: " ;
+    cin >> wr;
+    mat Amat = makeA(rho_min, rho_max, n, true, wr);
+    //Amat.print();
     mat v = mat(n,n); v.zeros();
     for (int i=0;i<n;i++){
         for (int j=0;j<n;j++){
@@ -212,15 +219,17 @@ int main(){
             }
         }
     }
-    int jac = jacobi(n, false, eps, 1, Amat, v);
+    int jac = jacobi(n, true, eps, wr, Amat, v);
     mat first_three_vectors = get_eigenvecs(Amat, v, n);
     cout << endl;
     first_three_vectors.print();
     vec lam = get_eigenvals(Amat,n);
-    cout << lam << endl;
-/*  NEED TO COMPARE WITH ARMADILLOSOLVER
-    vec ADsolver = eig_sys(Amat, v, n);
-*/
-    Amat.print();
+    cout << lam(0) << endl << lam(1) << endl << lam(2) << endl;
+    clock_t start2, end2;
+    start2 = clock();
+    vec ADsolver = eig_sym(Amat);
+    end2 = clock();
+    cout<<scientific<<"Armadillo CPU time (sec) : "<<((double)end2-(double)start2)/CLOCKS_PER_SEC<<endl;
+    cout << "Armadillo says = " << endl << ADsolver(0) << endl << ADsolver(1) << endl << ADsolver(2) << endl;
     return 0;
 }
