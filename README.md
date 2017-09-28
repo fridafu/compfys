@@ -1,2 +1,0 @@
-# compfys
-Computational Physics
