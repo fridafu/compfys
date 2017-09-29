@@ -128,7 +128,7 @@ int jacobi(int n, int interact, double conv, double wr, mat& a, mat& v) {
 }
 
 //get first three eigenvectors
-mat get_eigenvecs(mat a, mat v, int n, bool write_to_file = false){
+mat get_eigenvecs(mat a, mat v, int n, bool write_to_file){
     vector<double>eigenvals=get_eigenvals(a,n);
     mat vecs(3,n);
     for(int i=0;i<3;i++){
@@ -250,7 +250,7 @@ void test() {
        }
 
 
-       mat first_three_vectors = get_eigenvecs(A, v, n);
+       mat first_three_vectors = get_eigenvecs(A, v, n, false);
 
        double eps = 1e-8;
 
