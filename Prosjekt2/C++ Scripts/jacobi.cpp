@@ -11,20 +11,21 @@
 using namespace std;
 using namespace arma;
 
+//Creating a tri-diagonal matrix with diagonal elements d+V, neighbouring elements to the diagonal e, and the rest of the off diagonal elements = 0
 mat makeA(double rho_min, double rho_max, int n, bool interact, double wr) {
-
     // Step size
     double h = (rho_max - rho_min)/(n);
     // Init potential
     double V = 0;
-    // Tridiag-matrix
+    // Making a matrix filled with zeros
     mat A = mat(n,n); A.zeros();
     double d = 2./(h*h);
     double e = -1./(h*h);
     int i=0;
+    //iterating over values of rho
     for (i = 0; i < n; i++) {
         double rho = (i+1)*h;
-        // Coulomb or not?
+        // Coulomb potential (interaction) or not?
         if (interact) {
             V = wr*wr*rho*rho + 1./(rho);
             //cout << "YEY" <<endl;
@@ -33,21 +34,17 @@ mat makeA(double rho_min, double rho_max, int n, bool interact, double wr) {
             //cout << "NOOO" << endl;
         }
 
-       // V-diagonal
+       // Assigning elements on the diagonal with the potential
        A(i,i) = d + V;
-       // diagonal sideburns
+       // Editing the side-diagonal elements
        if (i < n-1){
            A(i,i+1) = e;
            A(i+1,i) = e;
         }
     }
-    //A.print();
     return A;
 
 }
-
-
-
 // performs jacobi algorithm
 // to find eigenvalues/vectors
 int jacobi(int n, int interact, double conv, double wr, mat& a, mat& v) {
@@ -205,10 +202,105 @@ void print_vals(mat A, mat v,int n,double conv){
     }
 }
 
+void test() {
+
+    try{
+
+        int q, r;
+        int n = 100;
+        double maxoffdiag;
+
+        mat B = { {1, 3, 0, 0, 0},
+                  {2, 4, 6, 0, 0},
+                  {0, 3, 7, 2, 0},
+                  {0, 0, 7, 9, 4},
+                  {0, 0, 0, 1, 3}
+                };
+
+       find_max(B, q, r, maxoffdiag, 5);
+
+       /*Checks if find_max() returns correct value and indexes
+        */
+       if (maxoffdiag != 7 || q != 3 || r != 2) {
+           throw 99;
+
+       }
+
+       mat A = makeA(0, 5, n, false, 0); //Makes matrix with known eigenvalues
+       mat v = eye(n,n);
+
+       //Disables cout during test.
+
+       streambuf* orig_buf = cout.rdbuf();
+       cout.rdbuf(NULL);
+       int jac = jacobi(n, true, 1e-8, 0, A, v);
+       cout.rdbuf(orig_buf);
+
+       vec ei = get_eigenvals(A, n);
+
+       /*
+        * Throw exception if the relative error in eigenvalues is more than 0.1%
+        */
+       for (int u = 0; u < n; u++) {
+           if ( (1 - ei(u)/( 2*(2*u + 3./2.) ) )*100  > 0.1) {
+               throw 'a';
+               break;
+           }
+       }
+
+
+       mat first_three_vectors = get_eigenvecs(A, v, n);
+
+       double eps = 1e-8;
+
+       /* Calculates the inner product of
+        * the eigenvectors and throws exception
+        * it they are not orthogonal.
+       */
+       for (int i = 0; i < 3; i++) {
+
+           for (int j = 0; j < 3; j++) {
+
+               double inner_product = 0;
+
+               for (int u = 0; u < n; u++) {
+                    inner_product += first_three_vectors(i,u)*first_three_vectors(j,u);
+               }
+               if (i != j && fabs( inner_product ) > eps) {
+                   throw 1.5;
+                   break;
+               }
+               if (i == j && fabs(fabs( inner_product ) - 1 ) > eps) {
+                   throw 1.5;
+                   break;
+               }
+           }
+       }
+
+
+       }
+       catch(int x) {
+           cout << "ERROR: maxdiag() did not return the correct matrix element!"<<endl;
+       }
+       catch(char a) {
+           cout <<"ERROR: jacobi() did not return the correct eigenvalues!"<<endl;
+       }
+       catch(double b) {
+           cout <<"ERROR: get_eigenvecs() did not return orthogonal eigenvectors!"<<endl;
+       }
+}
+
+
 int main(){
+    cout << "Unit test initiated!" << endl;
+    test(); //run unit tests
+    cout << "Unit test complete!" << endl;
+
+    //Boundary "close enough" to 0
     double eps = 1e-8;
     double rho_min = 0;
     double rho_max;
+    //"frequency" wr reflects coulomb potential
     double wr;
     double n;
     cout << "Gimme an n: " ;
@@ -217,8 +309,9 @@ int main(){
     cin >> rho_max;
     cout << "Gimme an wr: " ;
     cin >> wr;
+    //Make a matrix with the given parameters
     mat Amat = makeA(rho_min, rho_max, n, true, wr);
-    //Amat.print();
+   //Create identity matrix v
     mat v = mat(n,n); v.zeros();
     for (int i=0;i<n;i++){
         for (int j=0;j<n;j++){
@@ -230,14 +323,19 @@ int main(){
             }
         }
     }
+    //Run the jacobi algorithm for our matrix and parameters
     int jac = jacobi(n, true, eps, wr, Amat, v);
+    //Finding the first three eigenvectors of the sorted vectors.
     mat first_three_vectors = get_eigenvecs(Amat, v, n);
     cout << endl;
     first_three_vectors.print();
+    // finding the first three eigenvalues
     vec lam = get_eigenvals(Amat,n);
     cout << lam(0) << endl << lam(1) << endl << lam(2) << endl;
+    //Taking the time it takes to run the Armadillo solver
     clock_t start2, end2;
     start2 = clock();
+    //Solving the eigenvalue problem with a built in Armadillo solver
     vec ADsolver = eig_sym(Amat);
     end2 = clock();
     cout<<scientific<<"Armadillo CPU time (sec) : "<<((double)end2-(double)start2)/CLOCKS_PER_SEC<<endl;
