@@ -145,7 +145,7 @@ mat get_eigenvecs(mat a, mat v, int n){
     cout << "Give me a filname: ";
     cin >> filename;
     ofstream myfile;
-    myfile.open("/home/hannahcb/compfys/Prosjekt2/" +  filename +".txt");
+    myfile.open("/home/hannahcb/compfys/Prosjekt2/Python" +  filename +".txt");
     myfile << vecs << endl;
     myfile.close();
 
