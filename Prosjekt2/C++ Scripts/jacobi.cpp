@@ -128,7 +128,7 @@ int jacobi(int n, int interact, double conv, double wr, mat& a, mat& v) {
 }
 
 //get first three eigenvectors
-mat get_eigenvecs(mat a, mat v, int n){
+mat get_eigenvecs(mat a, mat v, int n, bool write_to_file = false){
     vector<double>eigenvals=get_eigenvals(a,n);
     mat vecs(3,n);
     for(int i=0;i<3;i++){
@@ -140,15 +140,16 @@ mat get_eigenvecs(mat a, mat v, int n){
              }
          }
     }
-    // writing eigenvectors to file
-    string filename;
-    cout << "Give me a filname: ";
-    cin >> filename;
-    ofstream myfile;
-    myfile.open("/home/hannahcb/compfys/Prosjekt2/" +  filename +".txt");
-    myfile << vecs << endl;
-    myfile.close();
-
+    if (write_to_file) {
+        // writing eigenvectors to file
+        string filename;
+        cout << "Give me a filname: ";
+        cin >> filename;
+        ofstream myfile;
+        myfile.open("/home/hannahcb/compfys/Prosjekt2/" +  filename +".txt");
+        myfile << vecs << endl;
+        myfile.close();
+    }
 
     return vecs;
 }
@@ -326,7 +327,7 @@ int main(){
     //Run the jacobi algorithm for our matrix and parameters
     int jac = jacobi(n, true, eps, wr, Amat, v);
     //Finding the first three eigenvectors of the sorted vectors.
-    mat first_three_vectors = get_eigenvecs(Amat, v, n);
+    mat first_three_vectors = get_eigenvecs(Amat, v, n, true);
     cout << endl;
     first_three_vectors.print();
     // finding the first three eigenvalues
