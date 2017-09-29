@@ -6,6 +6,7 @@
 #include<algorithm>
 #include<vector>
 #include "jacobi.h"
+#include <string>
 
 using namespace std;
 using namespace arma;
@@ -26,10 +27,10 @@ mat makeA(double rho_min, double rho_max, int n, bool interact, double wr) {
         // Coulomb or not?
         if (interact) {
             V = wr*wr*rho*rho + 1./(rho);
-            cout << "YEY" <<endl;
+            //cout << "YEY" <<endl;
         } else {
             V = rho*rho;
-            cout << "NOOO" << endl;
+            //cout << "NOOO" << endl;
         }
 
        // V-diagonal
@@ -142,6 +143,16 @@ mat get_eigenvecs(mat a, mat v, int n){
              }
          }
     }
+    // writing eigenvectors to file
+    string filename;
+    cout << "Give me a filname: ";
+    cin >> filename;
+    ofstream myfile;
+    myfile.open("/home/hannahcb/compfys/Prosjekt2/" +  filename +".txt");
+    myfile << vecs << endl;
+    myfile.close();
+
+
     return vecs;
 }
 

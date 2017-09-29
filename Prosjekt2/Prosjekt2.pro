@@ -6,7 +6,7 @@ CONFIG -= qt
 INCLUDEPATH += /usr/local/include
 LIBS += -L/usr/local/lib
 
-SOURCES += main.cpp
+
 SOURCES += jacobi.h
 SOURCES += jacobi.cpp
 LIBS += -larmadillo -llapack -lblas
