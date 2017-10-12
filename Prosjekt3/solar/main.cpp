@@ -5,7 +5,8 @@
 #include <string>
 #define _USE_MATH_DEFINES
 #define pi M_PI
-#include "velverlet.h"
+#include "solver.h"
+#include "planet.h"
 
 using namespace std;
 using namespace arma;

@@ -24,8 +24,9 @@ solver::solver(double radi){
 
 }
 
-void solver::G_constant(){ //double mass4pi){
-    G = 4*pi*pi// mass4pi; //radius*radius*radius;
+double solver::G_constant(){ //double mass4pi){
+    return 4*pi*pi// mass4pi; //radius*radius*radius;
+
 }
 
 /*void solver::print_trajectory(std:ofstram &output, string filename, int N, int dimensions, double time){ // write mass, trajectory and velocity to file 'output'
@@ -42,6 +43,32 @@ void solver::G_constant(){ //double mass4pi){
     }
 
 */
+
+void solver::velVerlet(double h, int n){// call on this in a for loop in overlooking class
+    vec a = zeros<vec>(2);
+    vec newa = zeros<vec>(2);
+    // Velocity Verlet method for trajectory calculations
+    a = planet.Acceleration(otherPlanet,G_constant())*planet.position;
+    planet.position += h*planet.velocity * 0.5*h*h*a;
+    anew = planet.Acceleration(otherPlanet,G_constant())*planet.position;
+    planet.velocity += 0.5*h*(a+anew);
+
+        /*
+        axi = -GM_sun*x(i)/pow(rsqrt,1.5);
+        ayi = -GM_sun*y(i)/pow(rsqrt,1.5);
+        x(i+1) = x(i) + h*vx(i) + 0.5*h*h*axi;
+        y(i+1) = y(i) + h*vy(i) + 0.5*h*h*ayi;
+        axi1 = -GM_sun*x(i+1)/pow(rsqrt,1.5); // calculate ax(i+1) and
+        ayi1 = -GM_sun*y(i+1)/pow(rsqrt,1.5); // calculate ax(i+1) and
+        vx(i+1) = vx(i) + 0.5*h*(axi+axi1);
+        vy(i+1) = vy(i) + 0.5*h*(ayi+ayi1);
+        //myfile << x(i+1) << "  " << y(i+1) << endl; // write rest of x, y coordinates to file
+        }
+        myfile.close();
+        */
+}
+
+/*
 void solver::velVerlet(int dimensions, double h, int Nplanets){
 
 
@@ -78,3 +105,4 @@ void solver::velVerlet(int dimensions, double h, int Nplanets){
     // set up arrays for positions
 
 }
+*/

@@ -21,14 +21,14 @@ double planet::distance(planet otherPlanet){ //Also making another planet
     x2 = otherPlanet.position[0];
     y2 = otherPlanet.position[1];
     x_ = x2 - x1; y_ = y2 - y1;
-    return sqrt(x_**2 + y_**2);
+    return sqrt(x_*x_ + y_*y_);
 }
 
 //Find the Gravitational force between two planets in 2D
 double planet::GForce(planet otherPlanet, double G_constant){
     double r;
     r = distance(otherPlanet);
-    return - (G_constant*(otherPlanet.mass)*mass)/(r**2);
+    return - (G_constant*(otherPlanet.mass)*mass)/(r*r*r);
 }
 
 //Find the acceleration of planet
@@ -38,7 +38,7 @@ double planet::Acceleration(planet otherPlanet, double G_constant){
 
 //Calculate Kinetic Energy of planet
 double planet::KE(){
-    v_squared = (velocity[0])**2 + (velocity[1])**2 + (velocity[2])**2;
+    v_squared = velocity[0]*velocity[0] + velocity[1]*velocity[1] + velocity[2]*velocity[2];
     return 0.5*mass*v_squared;
 }
 
