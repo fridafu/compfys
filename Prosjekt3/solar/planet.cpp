@@ -33,16 +33,16 @@ double planet::GForce(planet otherPlanet, double G_constant){
 
 //Find the acceleration of planet
 double planet::Acceleration(planet otherPlanet, double G_constant){
-    return GForce(otherPlanet, G_constant)/mass
+    return GForce(otherPlanet, G_constant)/mass;
 }
 
 //Calculate Kinetic Energy of planet
 double planet::KE(){
-    v_sqared = (velocity[0])**2 + (velocity[1])**2 + (velocity[2])**2
-    return 0.5*mass*v_squared
+    v_squared = (velocity[0])**2 + (velocity[1])**2 + (velocity[2])**2;
+    return 0.5*mass*v_squared;
 }
 
 //Caluclate Potential Energy of planet wrt other planet
 double planet::PE(planet &otherPlanet, double G_const, double epsilon){
-    return mass*G_const*distance(otherPlanet)
+    return mass*G_const*distance(otherPlanet);
 }
