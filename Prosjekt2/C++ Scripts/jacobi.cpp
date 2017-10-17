@@ -7,6 +7,7 @@
 #include<vector>
 #include "jacobi.h"
 #include <string>
+#include <armadillo>
 
 using namespace std;
 using namespace arma;
