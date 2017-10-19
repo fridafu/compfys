@@ -27,6 +27,9 @@ public:
     double G = 4*M_PI*M_PI;
     double kinetic_tot = 0;
     double potential_tot = 0;
+    int total_planets;
+    double total_mass;
+    std::vector<planet> all_planets;
 
     // initializers
     solver();
@@ -34,12 +37,12 @@ public:
 
     // functions in the class solver
     //void add(planet newplanet);
-    void G_constant();
+    double G_constant();
     //void print_trajectory();//std::ofstream &output, int dimensions, double time, int number);
-    void velVerlet(int dimensions, double h, int Nplanets);
+    void add(planet newplanet);
+    void addM(planet newplanet);
 
-
-
+    void velVerlet(double h, int n, planet* p1, planet* p2);
 };
 
 #endif // SOLVER_H

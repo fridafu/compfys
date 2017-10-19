@@ -4,15 +4,16 @@
 #include <cmath>
 #include <vector>
 using std::vector;
-
+#include "armadillo"
+using namespace arma;
 
 class planet
 {
 public:
     // Properties
     double mass;
-    double position[3];
-    double velocity[3];
+    vec position = zeros(3);
+    vec velocity = zeros(3);
     double potential;
     double kinetic;
 
@@ -22,8 +23,8 @@ public:
 
     // Functions
     double distance(planet otherPlanet);
-    double GForce(planet otherPlanet, double G_constant);
-    double Acceleration(planet otherPlanet, double G_constant);
+    vec GForce(planet otherPlanet, double G_constant);
+    vec Acceleration(planet otherPlanet, double G_constant);
     double KE();
     double PE(planet &otherPlanet, double G_constant, double epsilon);
 

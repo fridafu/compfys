@@ -40,30 +40,43 @@ double solver::G_constant(){ //double mass4pi){
 
 */
 
-void solver::velVerlet(double h, int n, planet otherPlanet){// call on this in a for loop in overlooking class
-    double a[3];
-    double anew[3];
+void solver::velVerlet(double h, int n, planet* p1, planet* p2){// call on this in a for loop in overlooking class
+    vec a(3);
+    vec anew(3);
     // Velocity Verlet method for trajectory calculations
-    for(i=0;)
-    a = planet.Acceleration(otherPlanet,G_constant())*planet.position;
-    planet.position += h*planet.velocity + 0.5*h*h*a;
-    anew = planet.Acceleration(otherPlanet,G_constant())*planet.position;
-    planet.velocity += 0.5*h*(a+anew);
-    cout << planet.position << endl;
-        /*
-        axi = -GM_sun*x(i)/pow(rsqrt,1.5);
-        ayi = -GM_sun*y(i)/pow(rsqrt,1.5);
-        x(i+1) = x(i) + h*vx(i) + 0.5*h*h*axi;
-        y(i+1) = y(i) + h*vy(i) + 0.5*h*h*ayi;
-        axi1 = -GM_sun*x(i+1)/pow(rsqrt,1.5); // calculate ax(i+1) and
-        ayi1 = -GM_sun*y(i+1)/pow(rsqrt,1.5); // calculate ax(i+1) and
-        vx(i+1) = vx(i) + 0.5*h*(axi+axi1);
-        vy(i+1) = vy(i) + 0.5*h*(ayi+ayi1);
-        //myfile << x(i+1) << "  " << y(i+1) << endl; // write rest of x, y coordinates to file
-        }
-        myfile.close();
-        */
+    a = p1->Acceleration(*p2,G_constant())%p1->position;
+    p1->position += h*p1->velocity + 0.5*h*h*a;
+    anew = p1->Acceleration(*p2,G_constant())%p1->position;
+    p1->velocity += 0.5*h*(a+anew);
 }
+
+void solver::add(planet newplanet)
+{
+    total_planets += 1;
+    total_mass += newplanet.mass;
+    all_planets.push_back(newplanet);
+}
+
+void solver::addM(planet newplanet)
+{
+    total_planets +=1;
+    all_planets.push_back(newplanet);
+}
+
+
+/*
+axi = -GM_sun*x(i)/pow(rsqrt,1.5);
+ayi = -GM_sun*y(i)/pow(rsqrt,1.5);
+x(i+1) = x(i) + h*vx(i) + 0.5*h*h*axi;
+y(i+1) = y(i) + h*vy(i) + 0.5*h*h*ayi;
+axi1 = -GM_sun*x(i+1)/pow(rsqrt,1.5); // calculate ax(i+1) and
+ayi1 = -GM_sun*y(i+1)/pow(rsqrt,1.5); // calculate ax(i+1) and
+vx(i+1) = vx(i) + 0.5*h*(axi+axi1);
+vy(i+1) = vy(i) + 0.5*h*(ayi+ayi1);
+//myfile << x(i+1) << "  " << y(i+1) << endl; // write rest of x, y coordinates to file
+}
+myfile.close();
+*/
 
 /*
 void solver::velVerlet(int dimensions, double h, int Nplanets){

@@ -22,7 +22,20 @@ int main()
     double t_min = 0.0; // [yrs]
     int N = 300000; // number of steps
     double h = (t_max - t_min)/(N); // Step size h
+
+    planet planet1(0.000003,1.,0.0,0.0,0.0,6.3,0.); // Earth: (mass,x,y,z,vx,vy,vz)
+    planet planet2(1.,0.,0.,0.,0.,0.,0.);           // Sun: (mass,x,y,z,vx,vy,vz)
+
+    solver solve;
+    solve.add(planet1);
+    solve.add(planet2);
+
+    for ( int i=0; i<N-1; i++){
+        solve.velVerlet(h, N, &solve.all_planets[0], &solve.all_planets[1]);
+        cout << solve.all_planets[0].position;
+    }
     // initial conditions for postions
+    /*
     vec x = zeros<vec>(N);
     vec y = zeros<vec>(N);
     vec vx = zeros<vec>(N);
@@ -41,6 +54,7 @@ int main()
     // calculate the trajectories using both methods
     forward_Euler(N, h, x, y, vx, vy, filename1);
     velocity_Verlet(N, h, x, y, vx, vy, filename2);
+    */
     return 0;
 }
 
