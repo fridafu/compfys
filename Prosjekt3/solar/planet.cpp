@@ -28,7 +28,7 @@ double planet::distance(planet otherPlanet){ //Also making another planet
 double planet::GForce(planet otherPlanet, double G_constant){
     double r;
     r = distance(otherPlanet);
-    return - (G_constant*(otherPlanet.mass)*mass)/(r*r*r);
+    return - (position - otherPlanet.position)*(G_constant*(otherPlanet.mass)*mass)/(r*r*r);
 }
 
 //Find the acceleration of planet

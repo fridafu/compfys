@@ -1,6 +1,9 @@
 #include <iostream>
 #include "planet.h"
+#include <fstream>
+#include "armadillo"
 using namespace std;
+using namespace arma;
 
 
 template <class T>
@@ -9,63 +12,78 @@ class Nproblem {
     private:
         T objects[];
         int numobj;
-        double t[];
-        double rprev[numobj][3];
-        double masses[numobj];
-        double v0[numobj][3];
+        vec t;
+        double dt;
+        vec accel1(numobj);
+        double accel2;
     public:
+
         Nproblem(T obj[]) {
-            numobj = sizeof(obj);
             objects = obj;
-
-            for (int n = 0; n < numobj; n++) {
-                rprev[n] = objects(n).position;
-                masses[n] = objects(n).mass;
+            numobj = sizeof(obj);
 
 
-            }
+
+
         }
-        double solve(double times[]) {
-            double r = new double[sizeof(times)][numobj][3];
-            r[0] = rprev;
-
-            t = times[];
-            for (int i = 1; i < sizeof(t); i++) {
-                for (int j = 0; j < numobj; j++) {
-                    double Fnext[3] = {0,0,0};
-                    for (int k = 0; k < numobj; k++) {
-                        if (k != j) {
-                            Fnext += objects(j).Gforce(objects(k));
-
-                        }
-                    acceleration = Fnext/mass(j);
-                    r[i][j] = advance();
-
-                    }
-                for (int l = 0; l < numobj; l++) {
-                    object(l).set_position(r[i][l])
-                }
-
-
-                }
-                rprev = r[i]
+        double solve(vec times) {
+            t = times;
+            dt = t(1) - t(0);
+            ofstream mytimes;
+            mytimes.open("times.txt");
+            for (int i = 0; i < sizeof(t); i++) {
+                mytimes << t(i) << endl;
             }
-
-
+            mytimes.close();
+            this->advance();
         }
 
 }
 
 class Verlet : public Nproblem {
     public:
-        double[] advance(double[] acceleration) {
+        void advance() {
+
+           ofstream myfile;
+           myfile.open ("solarsystem.txt")
+
+           for (int i = 0; i < sizeof(t); i++) {
+               for (int j = 0; j < numobj - 1; j++) {
+
+                   vec force = zeros(3);
+
+                   for (int k = 0; k < numobj - 1; k++) {
+                       force += objects(j).Force(objects(k));
+                   }
+                   force += objects(j).Force(objects(numobj-1));
+
+                   accel1(j) = force/objects(j).mass;
+                   objects(j).position = objects(j).position + objects(j).velocity*dt + 0.5*accel1(j)*dt**2;
+                   myfile << objects(j).position + " ";
+               }
+               for (int j = 0; j < numobj - 1; j++) {
+                   force = zeros(3);
 
 
-        }
+                   for (int k = 0; k < numobj - 1; k++) {
+                       force += objects(j).Force(objects(k));
+                   }
+                   force += objects(j).Force(objects(numobj - 1));
+
+                   accel2 = force/objects(j).mass;
+                   objects(j).velocity = objects(j).velocity + 0.5*(accel1(j) + accel2)*dt;
+               }
+               myfile << endl;
+            }
+            myfile.close();
+
 }
 
 int main()
 {
-    cout << "Hello World!" << endl;
+    solarsystem = listeavplanetobjekter;
+    solver = Verlet(solarsystem);
+    solver.solve();
+
     return 0;
 }
