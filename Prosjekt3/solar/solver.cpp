@@ -1,31 +1,27 @@
 #include "solver.h"
-#include <armadillo>
-#include <cmath>
-#include <fstream>
-#include <string>
-#define _USE_MATH_DEFINES
-#define pi M_PI
+
+
 
 solver::solver()
 {
-    planets_tot = 0;
-    radius = 100;
-    mass_tot = 0;
-    G = 4*pi*pi;
-    kinetic_tot = 0;
-    potential_tot = 0;
+    int planets_tot = 0;
+    double radius = 100;
+    double mass_tot = 0;
+    double G = 4*M_PI*M_PI;
+    double kinetic_tot = 0;
+    double potential_tot = 0;
 }
 
 solver::solver(double radi){
     planets_tot = 0;
     radius = radi;
     mass_tot = 0;
-    G = 4*pi*pi;
+    G = 4*M_PI*M_PI;
 
 }
 
 double solver::G_constant(){ //double mass4pi){
-    return 4*pi*pi// mass4pi; //radius*radius*radius;
+    return 4*M_PI*M_PI;// mass4pi; //radius*radius*radius;
 
 }
 
@@ -44,15 +40,16 @@ double solver::G_constant(){ //double mass4pi){
 
 */
 
-void solver::velVerlet(double h, int n){// call on this in a for loop in overlooking class
-    vec a = zeros<vec>(2);
-    vec newa = zeros<vec>(2);
+void solver::velVerlet(double h, int n, planet otherPlanet){// call on this in a for loop in overlooking class
+    double a[3];
+    double anew[3];
     // Velocity Verlet method for trajectory calculations
+    for(i=0;)
     a = planet.Acceleration(otherPlanet,G_constant())*planet.position;
-    planet.position += h*planet.velocity * 0.5*h*h*a;
+    planet.position += h*planet.velocity + 0.5*h*h*a;
     anew = planet.Acceleration(otherPlanet,G_constant())*planet.position;
     planet.velocity += 0.5*h*(a+anew);
-
+    cout << planet.position << endl;
         /*
         axi = -GM_sun*x(i)/pow(rsqrt,1.5);
         ayi = -GM_sun*y(i)/pow(rsqrt,1.5);

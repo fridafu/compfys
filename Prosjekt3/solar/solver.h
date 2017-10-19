@@ -3,7 +3,13 @@
 #include "planet.h"
 #include <vector>
 #include <fstream>
+#include <cmath>
+#include <string>
+#include "armadillo"
+#define _USE_MATH_DEFINES
+//#define pi M_PI
 using std::vector;
+using namespace arma;
 
 class solver
 {
@@ -11,13 +17,16 @@ public:
     friend class planet;
 
     // what kind of properties are there in the solver
-    double radius, mass_tot, G;
-    int Nplanets; // number of planets in the system we look at
-
+    //double radius, mass_tot, G;
+    //int Nplanets; // number of planets in the system we look at
 
     // the energy in the system
-    double kinetic_tot, potential_tot;
-
+    int planets_tot = 0;
+    double radius = 100;
+    double mass_tot = 0;
+    double G = 4*M_PI*M_PI;
+    double kinetic_tot = 0;
+    double potential_tot = 0;
 
     // initializers
     solver();
