@@ -31,12 +31,13 @@ double planet::distance(planet otherPlanet){ //Also making another planet
 vec planet::GForce(planet otherPlanet, double G_constant){
     double r;
     r = distance(otherPlanet);
-    return (position - otherPlanet.position)*(G_constant*(otherPlanet.mass)*this->mass)/(r*r*r);
+    cout << r;
+    return - (this->position - otherPlanet.position)*(G_constant*(otherPlanet.mass))/(r*r*r);
 }
 
 //Find the acceleration of planet
 vec planet::Acceleration(planet otherPlanet, double G_constant){
-    return GForce(otherPlanet, G_constant)/this->mass;
+    return GForce(otherPlanet, G_constant);
 }
 
 //Calculate Kinetic Energy of planet

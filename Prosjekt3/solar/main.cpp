@@ -20,7 +20,7 @@ int main()
     double y0 = 0.0; // [AU]
     double t_max = 3.0; // [yrs]
     double t_min = 0.0; // [yrs]
-    int N = 300000; // number of steps
+    int N = 30000; // number of steps
     double h = (t_max - t_min)/(N); // Step size h
 
     planet planet1(0.000003,1.,0.0,0.0,0.0,6.3,0.); // Earth: (mass,x,y,z,vx,vy,vz)

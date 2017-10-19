@@ -41,13 +41,15 @@ double solver::G_constant(){ //double mass4pi){
 */
 
 void solver::velVerlet(double h, int n, planet* p1, planet* p2){// call on this in a for loop in overlooking class
-    vec a(3);
-    vec anew(3);
+    vec a = zeros(3);
+    vec anew = zeros(3);
     // Velocity Verlet method for trajectory calculations
-    a = p1->Acceleration(*p2,G_constant())%p1->position;
-    p1->position += h*p1->velocity + 0.5*h*h*a;
-    anew = p1->Acceleration(*p2,G_constant())%p1->position;
-    p1->velocity += 0.5*h*(a+anew);
+    a = p1->Acceleration(*p2,G_constant());
+    a.print("a=");
+    p1->velocity += 0.5*h*a;
+    p1->position += h*p1->velocity; //+ 0.5*h*h*a;
+    anew = p1->Acceleration(*p2,G_constant());
+    p1->velocity += 0.5*h*anew;
 }
 
 void solver::add(planet newplanet)
