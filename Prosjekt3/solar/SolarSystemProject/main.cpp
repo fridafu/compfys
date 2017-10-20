@@ -35,7 +35,7 @@ int main()
     sunearth.addPlanet(pluto);
     sunearth.addPlanet(sun);
 
-    vec t = linspace(0,1,10000);
+    vec t = linspace(0,80,1000000);
 
     sunearth.solve(t, false);
     cout << "done";
