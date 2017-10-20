@@ -22,10 +22,20 @@ int main()
     planet pluto(6.55E-09, 1.055617467780279E+01, -3.171155893980367E+01, 3.398734604938684E-01, diy*3.055434179764572E-03, diy*3.445534930791035E-04, diy*-9.194998995737056E-04); // Pluto (mass,x,y,z,vx,vy,vz)
     planet sun(1, 2.208054875983525E-03, 5.746280454272564E-03, -1.299102546588019E-04, -diy*5.245593715780954E-06, diy*5.482120330588081E-06, diy*1.232780722108486E-07);
 
+
     Solver sunearth;
     sunearth.addPlanet(earth);
+    sunearth.addPlanet(mars);
+    sunearth.addPlanet(saturn);
+    sunearth.addPlanet(uranus);
+    sunearth.addPlanet(jupiter);
+    sunearth.addPlanet(venus);
+    sunearth.addplanet(mercury);
+    sunearth.addPlanet(neptune);
+    sunearth.addPlanet(pluto);
     sunearth.addPlanet(sun);
+
     vec t = linspace(0,3,100000);
-    sunearth.solve(t, true);
+    sunearth.solve(t, false);
 
 }
