@@ -27,7 +27,7 @@ private:
 public:
     Solver();
     void addPlanet(planet newplanet);
-    void solve(vec times, bool sunfix);
+    void solve(vec times, bool sunfix); //set sunfix = true if last planet added should be held fixed.
     void stepVerlet();
 
 };
