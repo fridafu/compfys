@@ -16,6 +16,7 @@ public:
     vec velocity = zeros(3);
     double potential;
     double kinetic;
+    double beta;
 
     // Initializers
     planet();

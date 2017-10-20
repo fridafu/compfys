@@ -9,7 +9,7 @@ using namespace arma;
 int main()
 {
     double diy = 365.242199;
-    double sunmass = 1.989E30;
+
 
     planet earth(0.000003,8.930309961463524E-01, 4.508411860073833E-01, -1.549928799609221E-04, -diy*7.978069853256020E-03, diy*1.533806773162681E-02, -diy*7.469966577773285E-07); // Earth: (mass,x,y,z,vx,vy,vz)
     planet mars(3.3E-7, -1.575528590018643E+00, 5.364921619154235E-01, 4.971260736828571E-02, -diy*3.942819907858700E-03, -diy*1.206234082100237E-02, -diy*1.561289187128983E-04);
@@ -22,20 +22,22 @@ int main()
     planet pluto(6.55E-09, 1.055617467780279E+01, -3.171155893980367E+01, 3.398734604938684E-01, diy*3.055434179764572E-03, diy*3.445534930791035E-04, diy*-9.194998995737056E-04); // Pluto (mass,x,y,z,vx,vy,vz)
     planet sun(1, 2.208054875983525E-03, 5.746280454272564E-03, -1.299102546588019E-04, -diy*5.245593715780954E-06, diy*5.482120330588081E-06, diy*1.232780722108486E-07);
 
-
     Solver sunearth;
+
     sunearth.addPlanet(earth);
     sunearth.addPlanet(mars);
     sunearth.addPlanet(saturn);
     sunearth.addPlanet(uranus);
     sunearth.addPlanet(jupiter);
     sunearth.addPlanet(venus);
-    sunearth.addplanet(mercury);
+    sunearth.addPlanet(mercury);
     sunearth.addPlanet(neptune);
     sunearth.addPlanet(pluto);
     sunearth.addPlanet(sun);
 
-    vec t = linspace(0,3,100000);
+    vec t = linspace(0,1,10000);
+
     sunearth.solve(t, false);
+    cout << "done";
 
 }
