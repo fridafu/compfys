@@ -13,6 +13,7 @@ planet::planet(double mass, double x, double y, double z, double vx, double vy, 
     potential = 0.;
     kinetic = 0.;
     beta = 2;
+    relcheck = false;
 }
 
 //Find distance between two planets in 2D
@@ -32,7 +33,23 @@ double planet::distance(planet otherPlanet){ //Also making another planet
 vec planet::GForce(planet otherPlanet, double G_constant){
     double r;
     r = distance(otherPlanet);
-    return -(position - otherPlanet.position)*(G_constant*(otherPlanet.mass)*this->mass)/(pow(r,beta + 1));
+    double c = 63239.7263; //AU/YR
+    vec pos;
+    pos = position - otherPlanet.position;
+    double l = norm(cross(pos, velocity));
+    double additionalterm = (1 + 3*l*l/(r*r*c*c));
+
+
+    if (relcheck)
+    {
+
+        return -(pos/r)*((G_constant*(otherPlanet.mass)*this->mass)/(r*r))*(additionalterm);
+    }
+    else
+    {
+
+        return -(position - otherPlanet.position)*(G_constant*(otherPlanet.mass)*this->mass)/(pow(r,beta + 1));
+    }
 }
 
 //Find the acceleration of planet
@@ -47,7 +64,7 @@ double planet::KE(){
 
 //Caluclate Potential Energy of planet wrt other planet
 double planet::PE(planet &otherPlanet, double G_const, double epsilon){
-    return mass*G_const*distance(otherPlanet);
+    return otherPlanet.mass*mass*G_const/distance(otherPlanet);
 }
 
 

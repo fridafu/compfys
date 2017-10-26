@@ -17,6 +17,7 @@ public:
     double potential;
     double kinetic;
     double beta;
+    bool relcheck;
 
     // Initializers
     planet();

@@ -14,3 +14,6 @@ HEADERS += \
     planet.h \
     solver.h
 LIBS += -larmadillo -llapack -lblas
+
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
