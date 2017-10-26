@@ -14,6 +14,7 @@ public:
     double mass;
     vec position = zeros(3);
     vec velocity = zeros(3);
+    vec pos1,pos2;
     double potential;
     double kinetic;
     double beta;
@@ -29,6 +30,13 @@ public:
     vec Acceleration(planet otherPlanet, double G_constant);
     double KE();
     double PE(planet &otherPlanet, double G_constant, double epsilon);
+    double KE();
+
+    double PE(planet otherPlanet, double G_constant);
+
+    double L(planet otherPlanet);
+
+
 
 };
 

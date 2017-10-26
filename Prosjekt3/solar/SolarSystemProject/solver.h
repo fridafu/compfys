@@ -39,6 +39,7 @@ public:
     void set_dt(double deltat);
     void set_sunfixed(bool sunfix);
     vec get_position(int planetnr);
+    void testConservation(bool sunfix);
 };
 
 #endif // SOLVER_H

@@ -272,4 +272,57 @@ void Solver::testStability(bool sunfix){
     mydistance.close();
 }
 
+void Solver::testConservation(bool sunfix){
+    sunfixed = sunfix;
+    if (sunfixed)
+    {
+        numobj--;
+    }
 
+    vec t = linspace(0,10,10000);
+    dt = t(1) - t(0);
+
+    double KE_end;
+    double PE_end;
+    double L_end;
+    double tol = 0.0001;
+    vec KE_ = zeros(size(t));
+    vec PE_ = zeros(size(t));
+    vec E_ = zeros(size(t));
+    vec L_ = zeros(size(t));
+
+    int i;
+    for(i=0;i<10000;i++){
+        //objects[0].position(0) = 1.;
+        //objects[0].position(1) = 0.0;
+        //objects[0].position(2) = 0.0;
+        //objects[0].velocity(0) = 0.0;
+        //objects[0].velocity(2) = 0.0;
+        //objects[0].velocity(1) = 6.3;
+
+        stepVerlet();
+        KE_(i) = objects[0].KE();
+        PE_(i) = objects[0].PE(objects[1], 4*pi*pi);
+        E_(i) = KE_(i) + PE_(i);
+        L_(i) = objects[0].L(objects[1]);
+        }
+    KE_end = KE_.end()[-2];
+    PE_end = PE_.end()[-2];
+    L_end = L_.end()[-2];
+    cout << KE_end - tol << KE_(1) << KE_end + tol << endl;
+    if(KE_end - tol < KE_(1)  && KE_(1) < KE_end + tol){
+           cout << "Kinetic energy is conserved! (Circular orbit!)" << endl;
+    }
+
+    if(PE_end - tol < PE_(1) && PE_(1) < PE_end + tol){
+           cout << "Potential energy is conserved! (Circular orbit!)" << endl;
+    }
+
+    if((PE_end + KE_end) - tol < (PE_(1) + KE_(1)) && (PE_(1) + KE_(1)) < (PE_end + KE_end) + tol){
+           cout << "Total energy is conserved!" << endl;
+    }
+
+    if(L_end - tol < L_(1) && L_(1) < L_end + tol){
+           cout << "Angular momentum is conserved!" << endl;
+    }
+}

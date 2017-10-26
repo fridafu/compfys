@@ -67,4 +67,39 @@ double planet::PE(planet &otherPlanet, double G_const, double epsilon){
     return otherPlanet.mass*mass*G_const/distance(otherPlanet);
 }
 
+double planet::KE(){
+
+    return 0.5*mass*dot(this->velocity,this->velocity);
+
+}
+
+
+
+//Caluclate Potential Energy of planet wrt other planet
+
+double planet::PE(planet otherPlanet, double G_const){
+
+    return - G_const*(mass*otherPlanet.mass)/distance(otherPlanet);
+
+}
+
+
+
+//Caluclate Angular momentum of the planet around another planet
+
+double planet::L(planet otherPlanet){
+
+    vec r_;
+
+    pos1 = this->position;
+
+    pos2 = otherPlanet.position;
+
+    r_ = pos1-pos2;
+
+    vec p = velocity * mass;
+
+    return norm(cross(r_,p));
+
+}
 
