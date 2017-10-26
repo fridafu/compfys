@@ -184,6 +184,11 @@ void Solver::stepEuler()
         }
 
         accel1.col(j) = force/objects[j].mass;
+
+
+    }
+    for (int j = 0; j < numobj; j++)
+    {
         objects[j].position = objects[j].position + objects[j].velocity*dt;
         objects[j].velocity = objects[j].velocity + accel1.col(j)*dt;
     }
