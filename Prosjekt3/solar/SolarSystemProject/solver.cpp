@@ -40,13 +40,12 @@ vec Solver::get_position(int planetnr)
     return objects[planetnr].position;
 }
 
-void Solver::solve(vec times, bool sunfix, bool writefile, string method)
 
+void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, string method)
 // times - vector of times.
 //set sunfix = true if the last planet added should be fixed in position
 // set writefile = true if you want the positions written to file
 // method = "1" for verlet. method = "2" for euler
-
 {
 
     sunfixed = sunfix;
@@ -83,21 +82,24 @@ void Solver::solve(vec times, bool sunfix, bool writefile, string method)
 
         if (writefile)
         {
-            mytimes << t(i) << endl;
-
-
-            for (int j = 0; j < numobj; j++)
+            if (i%skipwrite == 0)
             {
-                myfile << objects[j].position(0) << " " << objects[j].position(1) << " " << objects[j].position(2) << " ";
-            }
-            myfile << endl;
-        }
+                mytimes << t(i) << endl;
+                cout << 100*float(i)/size(t)(0) << endl;
 
-    }
+                for (int j = 0; j < numobj; j++)
+                {
+                    myfile << objects[j].position(0) << " " << objects[j].position(1) << " " << objects[j].position(2) << " ";
+                }
+                myfile << endl;
+            }
+
+        }
 
 
     mytimes.close();
     myfile.close();
+    }
 
 }
 
@@ -234,7 +236,8 @@ void Solver::testVel(vec times, bool sunfix, vec initvel)
 }
 
 
-void Solver::testStability(bool sunfix){
+void Solver::testStability(bool sunfix)
+{
     sunfixed = sunfix;
     if (sunfixed)
     {
@@ -272,7 +275,8 @@ void Solver::testStability(bool sunfix){
     mydistance.close();
 }
 
-void Solver::testConservation(bool sunfix){
+void Solver::testConservation(bool sunfix)
+{
     sunfixed = sunfix;
     if (sunfixed)
     {

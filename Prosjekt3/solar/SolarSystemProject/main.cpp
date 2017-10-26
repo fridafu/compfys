@@ -83,7 +83,8 @@ int main()
     sunearth.addPlanet(sun);
 
     vec t = linspace(0,250,100000000);
-    sunearth.solve(t, false, true);
+
+    sunearth.solve(t, false, true, 1000, "1");
 
     /*
     sunearth.addPlanet(earth);

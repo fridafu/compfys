@@ -25,16 +25,16 @@ public:
     planet(double mass,double x,double y,double z,double vx, double vy,double vz);
 
     // Functions
-    double distance(planet otherPlanet);
-    vec GForce(planet otherPlanet, double G_constant);
-    vec Acceleration(planet otherPlanet, double G_constant);
-    double KE();
-    double PE(planet &otherPlanet, double G_constant, double epsilon);
+    double distance(planet& otherPlanet);
+    vec GForce(planet& otherPlanet, double G_constant);
+    vec Acceleration(planet& otherPlanet, double G_constant);
     double KE();
 
-    double PE(planet otherPlanet, double G_constant);
 
-    double L(planet otherPlanet);
+
+    double PE(planet& otherPlanet, double G_constant);
+
+    double L(planet& otherPlanet);
 
 
 
