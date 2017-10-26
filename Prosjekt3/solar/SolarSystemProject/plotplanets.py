@@ -21,7 +21,7 @@ for linep, linet in zip(mypositionfile, mytimefile):
 
 
 
-planets =['Earth', 'Mars', 'Saturn', 'Uranus', 'Jupiter', 'Venus', 'Mercury', 'Neptune', 'Pluto', 'Sun']
+planets =['Earth', 'Jupiter', 'Sun']
 mypositionfile.close()
 mytimefile.close()
 

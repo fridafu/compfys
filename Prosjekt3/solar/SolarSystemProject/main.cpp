@@ -15,7 +15,7 @@ int main()
 
 
     //3f
-
+    /*
     vec earthpos(3);
     earthpos = {8.930309961463524E-01, 4.508411860073833E-01, -1.549928799609221E-04};
 
@@ -52,14 +52,13 @@ int main()
 
     vec t = linspace(0,15,10000000);
 
-    sej.solve(t,false, true);
+    sej.solve(t,false,true);
 
-
+    */
 
     //3f
-    /*
-    planet earth(0.000003,8.930309961463524E-01, 4.508411860073833E-01, -1.549928799609221E-04, -diy*7.978069853256020E-03, diy*1.533806773162681E-02, -diy*7.469966577773285E-07); // Earth: (mass,x,y,z,vx,vy,vz)
 
+    planet earth(0.000003,8.930309961463524E-01, 4.508411860073833E-01, -1.549928799609221E-04, -diy*7.978069853256020E-03, diy*1.533806773162681E-02, -diy*7.469966577773285E-07); // Earth: (mass,x,y,z,vx,vy,vz)
     planet mars(3.3E-7, -1.575528590018643E+00, 5.364921619154235E-01, 4.971260736828571E-02, -diy*3.942819907858700E-03, -diy*1.206234082100237E-02, -diy*1.561289187128983E-04);
     planet saturn(0.000275, -3.369277467674985E-01, -1.004985402690239E+01, 1.881475188874106E-01, diy*5.269910272418428E-03, -diy*2.053763749248873E-04, -diy*2.059570456178141E-04);
     planet uranus(0.00044, 1.785433444765009E+01, 8.819856193817925E+00, -1.985484452135033E-01, -diy*1.770719891211758E-03, diy*3.342961457662236E-03, diy*3.539795634394496E-05);
@@ -71,6 +70,22 @@ int main()
     planet sun(1, 2.208054875983525E-03, 5.746280454272564E-03, -1.299102546588019E-04, -diy*5.245593715780954E-06, diy*5.482120330588081E-06, diy*1.232780722108486E-07);
 
     Solver sunearth;
+
+    sunearth.addPlanet(earth);
+    sunearth.addPlanet(mars);
+    sunearth.addPlanet(saturn);
+    sunearth.addPlanet(uranus);
+    sunearth.addPlanet(jupiter);
+    sunearth.addPlanet(venus);
+    sunearth.addPlanet(mercury);
+    sunearth.addPlanet(neptune);
+    sunearth.addPlanet(pluto);
+    sunearth.addPlanet(sun);
+
+    vec t = linspace(0,250,100000000);
+    sunearth.solve(t, false, true);
+
+    /*
     sunearth.addPlanet(earth);
     sunearth.addPlanet(sun);
     vec t = linspace(0,80,1000000);
@@ -78,7 +93,7 @@ int main()
     */
 
     //3g
-    /*
+/*
     planet mercury(0.00044, -0.3075, 0, 0, 0, -12.44, 0);
     planet sun(1, 0, 0, 0, 0, 0, 0);
     mercury.relcheck = true;
@@ -98,24 +113,31 @@ int main()
     relfile.setf(ios::fixed);
     relfile.setf(ios::showpoint);
 
-    double dt = 1E-9;
+    double dt = 1E-8;
     double T = 100;
     mercurysun.set_dt(dt);
     mercurysun.set_sunfixed(true);
     int u = 1;
-    for (int i = 0; i < T/(2*dt); i++)
+    double r1;
+    double r2;
+    double r3;
+    vec pos2;
+    for (int i = 0; i < T/(dt); i++)
     {
-        vec r1 = mercurysun.get_position(0);
         mercurysun.stepVerlet();
-        vec r2 = mercurysun.get_position(0);
-        mercurysun.stepVerlet();
-        vec r3 = mercurysun.get_position(0);
-        if ( (norm(r2) < norm(r3)) && (norm(r2) < norm(r1)) && (r2(0) < 0) && (fabs(r2(1)) < 0.15) )
+        r1 = norm(mercurysun.get_position(0));
+
+
+
+        if ( (r2 < r3) && (r2 < r1) && (i > 3) )
         {
             cout << "orbit " << u << endl;
-            relfile << atan(r2(1)/r2(0))*206264.806 << endl;
+            relfile << atan(pos2(1)/pos2(0))*206264.806 << endl;
             u++;
         }
+        r3 = r2;
+        r2 = r1;
+        pos2 = mercurysun.get_position(0);
     }
 
 */
