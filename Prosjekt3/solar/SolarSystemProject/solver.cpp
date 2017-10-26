@@ -65,7 +65,7 @@ void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, string
     {
         for (int i = 0; i < numobj; i++)
         {
-            myfile << objects[i].position(0) << " " << objects[i].position(1) << " " << objects[i].position(2) << " ";;
+            myfile << objects[i].position(0) << " " << objects[i].position(1) << " " << objects[i].position(2) << " ";
         }
         myfile << endl;
     }
@@ -90,16 +90,16 @@ void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, string
                 for (int j = 0; j < numobj; j++)
                 {
                     myfile << objects[j].position(0) << " " << objects[j].position(1) << " " << objects[j].position(2) << " ";
+
                 }
                 myfile << endl;
             }
 
         }
 
-
+    }
     mytimes.close();
     myfile.close();
-    }
 
 }
 
