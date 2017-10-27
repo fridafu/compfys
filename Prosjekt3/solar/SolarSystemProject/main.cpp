@@ -52,7 +52,7 @@ int main()
 
     vec t = linspace(0,15,10000000);
 
-    sej.solve(t,false,true);
+    sej.solve(t,false,true,1,1);
 
     */
 
@@ -84,13 +84,13 @@ int main()
 
     vec t = linspace(0,250,1000000000);
 
-    sunearth.solve(t, false, true, 1000, "1");
+    sunearth.solve(t, false, true, 1000, 1);
     */
     /*
     sunearth.addPlanet(earth);
     sunearth.addPlanet(sun);
     vec t = linspace(0,80,1000000);
-    sunearth.solve(t, false, true);
+    sunearth.solve(t, false, true,1,1);
     */
 
     //3g

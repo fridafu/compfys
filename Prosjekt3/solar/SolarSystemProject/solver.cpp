@@ -41,11 +41,11 @@ vec Solver::get_position(int planetnr)
 }
 
 
-void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, string method)
+void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, int method)
 // times - vector of times.
 //set sunfix = true if the last planet added should be fixed in position
 // set writefile = true if you want the positions written to file
-// method = "1" for verlet. method = "2" for euler
+// method = 1 for verlet. method = 2 for euler
 {
 
     sunfixed = sunfix;
@@ -71,11 +71,11 @@ void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, string
     }
     for (long int i = 0; i < size(t)(0); i++)
     {
-        if (method == "1")
+        if (method == 1)
         {
             stepVerlet();
         }
-        if (method == "2")
+        if (method == 2)
         {
             stepEuler();
         }
@@ -195,7 +195,7 @@ void Solver::stepEuler()
     }
 }
 
-void Solver::testVel(vec times, bool sunfix, vec initvel)
+void Solver::testVel(vec times, bool sunfix, vec initvel, int method)
 {
 
     sunfixed = sunfix;
@@ -222,7 +222,14 @@ void Solver::testVel(vec times, bool sunfix, vec initvel)
 
             for (long int j = 0; j < size(t)(0); j++)
             {
-                stepVerlet();
+                if (method == 1)
+                {
+                    stepVerlet();
+                }
+                if (method == 2)
+                {
+                    stepEuler();
+                }
                 double r_ = abs(objects[0].distance(objects[1]));
                 if(1.- tol > r_ or r_ > 1.+tol){
                        bigv += 1;
@@ -238,7 +245,7 @@ void Solver::testVel(vec times, bool sunfix, vec initvel)
 }
 
 
-void Solver::testStability(bool sunfix, vec dt_)
+void Solver::testStability(bool sunfix, vec dt_, int method)
 {
 
     sunfixed = sunfix;
@@ -282,7 +289,15 @@ void Solver::testStability(bool sunfix, vec dt_)
         for (long int k = 0; k < steps; k++)
         {
 
-            stepVerlet();
+            if (method == 1)
+            {
+                stepVerlet();
+            }
+            if (method == 2)
+            {
+                stepEuler();
+            }
+
 
             if (k%1000000 == 0)
             {
@@ -297,7 +312,7 @@ void Solver::testStability(bool sunfix, vec dt_)
     mydistance.close();
 }
 
-void Solver::testConservation(bool sunfix)
+void Solver::testConservation(bool sunfix, int method)
 {
     sunfixed = sunfix;
     if (sunfixed)
@@ -326,7 +341,14 @@ void Solver::testConservation(bool sunfix)
         //objects[0].velocity(2) = 0.0;
         //objects[0].velocity(1) = 6.3;
 
-        stepVerlet();
+        if (method == 1)
+        {
+            stepVerlet();
+        }
+        if (method == 2)
+        {
+            stepEuler();
+        }
         KE_(i) = objects[0].KE();
         PE_(i) = objects[0].PE(objects[1], 4*pi*pi);
         E_(i) = KE_(i) + PE_(i);
