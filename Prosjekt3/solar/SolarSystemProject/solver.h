@@ -31,7 +31,7 @@ private:
 public:
     Solver();
     void addPlanet(planet newplanet);
-    void solve(vec times, bool sunfix, bool writefile = true, int skipwrite = 1, string method = "1"); //set sunfix = true if last planet added should be held fixed.
+    void solve(vec times, bool sunfix, bool writefile = true, int skipwrite = 1, int method = 1); //set sunfix = true if last planet added should be held fixed.
     void stepVerlet();
     void stepEuler();
     void testVel(vec times, bool sunfix, vec initvel, int method);
