@@ -90,7 +90,7 @@ int main()
     sunearth.addPlanet(earth);
     sunearth.addPlanet(sun);
     vec t = linspace(0,80,1000000);
-    sunearth.solve(t, false, true,1,1);
+    sunearth.solve(t, false, true,100,1);
     */
 
     //3g
@@ -159,19 +159,12 @@ int main()
 
 
     vec deltat = logspace(-7, -1, 101);
-
-
-
     Solver stab;
-
     planet earth(0.000003, 1, 0, 0, 0, 6.3, 0);
-
     planet sun(1,0,0,0,0,0,0);
-
     stab.addPlanet(earth);
     stab.addPlanet(sun);
-
-    stab.testStability(true, deltat);
+    stab.testStability(true, deltat, 1);
 
 
 

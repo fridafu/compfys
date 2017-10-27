@@ -206,7 +206,7 @@ void Solver::testVel(vec times, bool sunfix, vec initvel, int method)
 
     double tol = 0.03;
     long int i;
-    for(i=0; i<30; i++){
+    for(i=0; i < size(initvel)(0); i++){
         int bigv = 0;
         double vel;
         vel = initvel(i);
