@@ -104,7 +104,6 @@ void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, string
 }
 
 
-
 void Solver::stepVerlet()
 //Step forward using velocity verlet
 {

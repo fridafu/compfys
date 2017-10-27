@@ -57,7 +57,7 @@ int main()
     */
 
     //3f
-
+    /*
     planet earth(0.000003,8.930309961463524E-01, 4.508411860073833E-01, -1.549928799609221E-04, -diy*7.978069853256020E-03, diy*1.533806773162681E-02, -diy*7.469966577773285E-07); // Earth: (mass,x,y,z,vx,vy,vz)
     planet mars(3.3E-7, -1.575528590018643E+00, 5.364921619154235E-01, 4.971260736828571E-02, -diy*3.942819907858700E-03, -diy*1.206234082100237E-02, -diy*1.561289187128983E-04);
     planet saturn(0.000275, -3.369277467674985E-01, -1.004985402690239E+01, 1.881475188874106E-01, diy*5.269910272418428E-03, -diy*2.053763749248873E-04, -diy*2.059570456178141E-04);
@@ -82,10 +82,10 @@ int main()
     sunearth.addPlanet(pluto);
     sunearth.addPlanet(sun);
 
-    vec t = linspace(0,250,100000000);
+    vec t = linspace(0,250,1000000000);
 
     sunearth.solve(t, false, true, 1000, "1");
-
+    */
     /*
     sunearth.addPlanet(earth);
     sunearth.addPlanet(sun);
@@ -94,11 +94,11 @@ int main()
     */
 
     //3g
-/*
+
     planet mercury(0.00044, -0.3075, 0, 0, 0, -12.44, 0);
     planet sun(1, 0, 0, 0, 0, 0, 0);
-    mercury.relcheck = true;
-    sun.relcheck = true;
+    //mercury.relcheck = true;
+    //sun.relcheck = true;
 
     Solver mercurysun;
 
@@ -106,13 +106,16 @@ int main()
 
     mercurysun.addPlanet(sun);
 
+
+    //43.0051161202 with linear fit
+    //43.0051161202
+    //-0.0452518303653
+
     ofstream relfile;
+    ofstream reltime;
 
-    relfile.open("relfile.txt");
-
-    relfile.precision(20);
-    relfile.setf(ios::fixed);
-    relfile.setf(ios::showpoint);
+    relfile.open("relfile2.txt");
+    reltime.open("reltime2.txt");
 
     double dt = 1E-8;
     double T = 100;
@@ -123,25 +126,28 @@ int main()
     double r2;
     double r3;
     vec pos2;
+
     for (int i = 0; i < T/(dt); i++)
     {
         mercurysun.stepVerlet();
         r1 = norm(mercurysun.get_position(0));
 
-
-
         if ( (r2 < r3) && (r2 < r1) && (i > 3) )
         {
             cout << "orbit " << u << endl;
             relfile << atan(pos2(1)/pos2(0))*206264.806 << endl;
+            reltime << i*dt << endl;
             u++;
         }
+
         r3 = r2;
         r2 = r1;
         pos2 = mercurysun.get_position(0);
     }
+    relfile.close();
+    reltime.close();
 
-*/
+
     /*
      * 0.307525801686
      * 0.0316386333173 without rel
