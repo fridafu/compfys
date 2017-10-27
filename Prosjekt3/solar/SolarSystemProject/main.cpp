@@ -94,7 +94,7 @@ int main()
     */
 
     //3g
-
+    /*
     planet mercury(0.00044, -0.3075, 0, 0, 0, -12.44, 0);
     planet sun(1, 0, 0, 0, 0, 0, 0);
     //mercury.relcheck = true;
@@ -146,7 +146,7 @@ int main()
     }
     relfile.close();
     reltime.close();
-
+    */
 
     /*
      * 0.307525801686
@@ -155,5 +155,24 @@ int main()
      * without 6523.760374
      *
     */
+
+
+
+    vec deltat = logspace(-7, -1, 101);
+
+
+
+    Solver stab;
+
+    planet earth(0.000003, 1, 0, 0, 0, 6.3, 0);
+
+    planet sun(1,0,0,0,0,0,0);
+
+    stab.addPlanet(earth);
+    stab.addPlanet(sun);
+
+    stab.testStability(true, deltat);
+
+
 
 }

@@ -235,8 +235,10 @@ void Solver::testVel(vec times, bool sunfix, vec initvel)
 }
 
 
-void Solver::testStability(bool sunfix)
+void Solver::testStability(bool sunfix, vec dt_)
 {
+
+    /*
     sunfixed = sunfix;
     if (sunfixed)
     {
@@ -270,6 +272,62 @@ void Solver::testStability(bool sunfix)
         distances(i) = r_.end()[-2];
         mydistance << distances(i) << endl;;
         }
+    mydt.close();
+    mydistance.close();
+    */
+    //This may work
+
+    sunfixed = sunfix;
+    if (sunfixed)
+    {
+        numobj--;
+    }
+
+
+    mydt.open("dt.txt");
+    mydistance.open("distance.txt");
+
+    double x = objects[0].position(0);
+    double y = objects[0].position(1);
+    double z = objects[0].position(2);
+    double vx = objects[0].velocity(0);
+    double vy = objects[0].velocity(1);
+    double vz = objects[0].velocity(2);
+
+
+    for (int i = 0; i < size(dt_)(0); i++)
+    {
+
+
+        set_dt(dt_(i));
+        mydt << dt_(i) << endl;
+        objects[0].position(0) = x;
+        objects[0].position(1) = y;
+        objects[0].position(2) = z;
+        objects[0].velocity(0) = vx;
+        objects[0].velocity(1) = vy;
+        objects[0].velocity(2) = vz;
+
+        firststep = true;
+
+
+        long int steps = 1000/dt_(i);
+
+
+        for (int k = 0; k < steps; k++)
+        {
+
+            stepVerlet();
+
+            if (k%1000000 == 0)
+            {
+                cout << 100*float(k)/steps << endl;
+            }
+        }
+        mydistance << objects[0].distance(objects[1]) << endl;
+
+
+    }
     mydt.close();
     mydistance.close();
 }

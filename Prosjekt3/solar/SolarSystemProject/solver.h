@@ -35,7 +35,7 @@ public:
     void stepVerlet();
     void stepEuler();
     void testVel(vec times, bool sunfix, vec initvel);
-    void testStability(bool sunfix);
+    void testStability(bool sunfix, vec dt_);
     void set_dt(double deltat);
     void set_sunfixed(bool sunfix);
     vec get_position(int planetnr);
