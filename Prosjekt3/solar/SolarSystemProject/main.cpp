@@ -127,7 +127,7 @@ int main()
     double r3;
     vec pos2;
 
-    for (int i = 0; i < T/(dt); i++)
+    for (long int i = 0; i < T/(dt); i++)
     {
         mercurysun.stepVerlet();
         r1 = norm(mercurysun.get_position(0));

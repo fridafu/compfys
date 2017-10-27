@@ -69,7 +69,7 @@ void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, string
         }
         myfile << endl;
     }
-    for (int i = 0; i < size(t)(0); i++)
+    for (long int i = 0; i < size(t)(0); i++)
     {
         if (method == "1")
         {
@@ -197,8 +197,15 @@ void Solver::stepEuler()
 
 void Solver::testVel(vec times, bool sunfix, vec initvel)
 {
+
+    sunfixed = sunfix;
+    if (sunfixed)
+    {
+        numobj--;
+    }
+
     double tol = 0.03;
-    int i;
+    long int i;
     for(i=0; i<30; i++){
         int bigv = 0;
         double vel;
@@ -210,16 +217,10 @@ void Solver::testVel(vec times, bool sunfix, vec initvel)
         objects[0].velocity(2) = 0.0;
         objects[0].velocity(1) = vel;
 
-        sunfixed = sunfix;
-        if (sunfixed)
-        {
-            numobj--;
-        }
-
         t = times;
         dt = t(1) - t(0);
 
-            for (int j = 0; j < size(t)(0); j++)
+            for (long int j = 0; j < size(t)(0); j++)
             {
                 stepVerlet();
                 double r_ = abs(objects[0].distance(objects[1]));
@@ -232,50 +233,13 @@ void Solver::testVel(vec times, bool sunfix, vec initvel)
             }
         }
     cout << "The initial speed for a circular orbit is = " << circvel << " AU/years" << endl;
+
+
 }
 
 
 void Solver::testStability(bool sunfix, vec dt_)
 {
-
-    /*
-    sunfixed = sunfix;
-    if (sunfixed)
-    {
-        numobj--;
-    }
-
-    int i;
-    double n;
-    vec tpoints = linspace(100,1000000,100);
-
-    vec distances = zeros(500);
-    vec dt_ = linspace(1e-7,0.5,500);
-    mydt.open("dt.txt");
-    mydistance.open("distance.txt");
-    for(i=0;i<500;i++){
-        objects[0].position(0) = 1.;
-        objects[0].position(1) = 0.0;
-        objects[0].position(2) = 0.0;
-        objects[0].velocity(0) = 0.0;
-        objects[0].velocity(2) = 0.0;
-        objects[0].velocity(1) = 6.3;
-
-        //n = tpoints(i);
-        dt = dt_(i);
-        mydt << dt << endl;;
-        vec r_ = zeros(500);
-        for (int k = 0; k < size(dt_)(0); k++){
-            stepVerlet();
-            r_(k) = objects[0].distance(objects[1]);
-            }
-        distances(i) = r_.end()[-2];
-        mydistance << distances(i) << endl;;
-        }
-    mydt.close();
-    mydistance.close();
-    */
-    //This may work
 
     sunfixed = sunfix;
     if (sunfixed)
@@ -308,13 +272,14 @@ void Solver::testStability(bool sunfix, vec dt_)
         objects[0].velocity(1) = vy;
         objects[0].velocity(2) = vz;
 
-        firststep = true;
+
 
 
         long int steps = 1000/dt_(i);
 
+        firststep = true;
 
-        for (int k = 0; k < steps; k++)
+        for (long int k = 0; k < steps; k++)
         {
 
             stepVerlet();
