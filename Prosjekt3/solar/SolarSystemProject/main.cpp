@@ -61,7 +61,4 @@ int main()
     relfile.close();
     reltime.close();
 
-
-
-
 }
