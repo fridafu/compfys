@@ -58,6 +58,7 @@ void Solver::solve(vec times, bool sunfix, bool writefile, int skipwrite, int me
     t = times;
     dt = t(1) - t(0);
 
+
     mytimes.open("times.txt");
     myfile.open ("solarsystem.txt");
 

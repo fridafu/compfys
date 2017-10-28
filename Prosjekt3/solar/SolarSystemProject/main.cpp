@@ -57,7 +57,7 @@ int main()
     */
 
     //3f
-    /*
+
     planet earth(0.000003,8.930309961463524E-01, 4.508411860073833E-01, -1.549928799609221E-04, -diy*7.978069853256020E-03, diy*1.533806773162681E-02, -diy*7.469966577773285E-07); // Earth: (mass,x,y,z,vx,vy,vz)
     planet mars(3.3E-7, -1.575528590018643E+00, 5.364921619154235E-01, 4.971260736828571E-02, -diy*3.942819907858700E-03, -diy*1.206234082100237E-02, -diy*1.561289187128983E-04);
     planet saturn(0.000275, -3.369277467674985E-01, -1.004985402690239E+01, 1.881475188874106E-01, diy*5.269910272418428E-03, -diy*2.053763749248873E-04, -diy*2.059570456178141E-04);
@@ -82,10 +82,12 @@ int main()
     sunearth.addPlanet(pluto);
     sunearth.addPlanet(sun);
 
-    vec t = linspace(0,250,1000000000);
 
-    sunearth.solve(t, false, true, 1000, 1);
-    */
+
+    vec t = linspace(0,250,250000000);
+
+    sunearth.solve(t, false, true, 2500, 1);
+
     /*
     sunearth.addPlanet(earth);
     sunearth.addPlanet(sun);
@@ -106,10 +108,6 @@ int main()
 
     mercurysun.addPlanet(sun);
 
-
-    //43.0051161202 with linear fit
-    //43.0051161202
-    //-0.0452518303653
 
     ofstream relfile;
     ofstream reltime;
@@ -146,26 +144,19 @@ int main()
     }
     relfile.close();
     reltime.close();
+
     */
 
     /*
-     * 0.307525801686
-     * 0.0316386333173 without rel
-     * with 8273.632236
-     * without 6523.760374
-     *
-    */
-
-
-
-    vec deltat = logspace(-7, -1, 101);
+    //vec deltat = logspace(-7, -1, 21);
+    vec deltat = linspace(0.0125893, 0.5,200);
     Solver stab;
     planet earth(0.000003, 1, 0, 0, 0, 6.3, 0);
     planet sun(1,0,0,0,0,0,0);
     stab.addPlanet(earth);
     stab.addPlanet(sun);
     stab.testStability(true, deltat, 1);
-
+    */
 
 
 }
