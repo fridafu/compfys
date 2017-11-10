@@ -61,8 +61,8 @@ int main()
         expvals1 = L2.get_expectation_values();
         L3.exp_vals(checkstep);
         expvals2 = L3.get_expectation_values();
-        myfileones << expvals1 << endl;
-        myfilerandom << expvals2 << endl;
+        myfileones << expvals1(0) << " " << expvals1(4) << endl;
+        myfilerandom << expvals2(0) << " " << expvals2(4) << endl;
     }
     myfileones.close();
     myfilerandom.close();
