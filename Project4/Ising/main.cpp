@@ -15,7 +15,7 @@ int main()
     double That = 1;
     double T = abs(That*J/k);
     //b)
-    /*
+
 
     int L = 2;
     double beta = 1./(T*k);
@@ -34,21 +34,21 @@ int main()
     cout << "analytical Cv = " << Cv << endl;
     cout << "analytical X = " << X << endl;
 
-    */
+
 
     //b)
 
     ofstream myfileones;
     ofstream myfilerandom;
-    int L = 20;
-    Ising L2 = Ising(J,L,T);
-    mat initstate1 = ones(L,L);
+    int LL = 20;
+    Ising L2 = Ising(J,LL,T);
+    mat initstate1 = ones(LL,LL);
     L2.set_state(initstate1);
 
-    Ising L3 = Ising(J,L,T);
+    Ising L3 = Ising(J,LL,T);
 
-    int totsteps = 1000000;
-    int checkstep = 1000;
+    int totsteps = 5000;
+    int checkstep = 10;
     vec expvals1;
     vec expvals2;
 
@@ -61,8 +61,8 @@ int main()
         expvals1 = L2.get_expectation_values();
         L3.exp_vals(checkstep);
         expvals2 = L3.get_expectation_values();
-        myfileones << expvals1(0) << " " << expvals1(4) << endl;
-        myfilerandom << expvals2(0) << " " << expvals2(4) << endl;
+        myfileones << expvals1(0) << " " << expvals1(4) << " " << (i+1)*checkstep << endl;
+        myfilerandom << expvals2(0) << " " << expvals2(4) << " " << (i+1)*checkstep << endl;
     }
     myfileones.close();
     myfilerandom.close();
