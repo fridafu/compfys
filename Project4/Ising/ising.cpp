@@ -23,7 +23,11 @@ Ising::Ising(double coupling, int l, double temp)
 void Ising::set_state(mat S)
 {
     state = S;
+    E = energy();
+    M = magnetization();
 }
+
+
 mat Ising::flip_rand_spin(mat S)
 {
 
@@ -72,7 +76,7 @@ double Ising::energy()
     }
     for (int i = 0; i < L-1; i++)
     {
-        E += state(L-1,i)*state(L-1,i+1);
+        E += state(L-1,i)*state(L-1,i+1) + state(i,L-1)*state(i+1,L-1);
         E += state(i,L-1)*state(i,0) + state(L-1,i)*state(0,i);
     }
     E += state(L-1,L-1)*state(L-1,0) + state(L-1,L-1)*state(0,L-1);
@@ -159,7 +163,7 @@ double Ising::magnetic_susceptibility()
         cout << "Expectation values not calculated" << endl;
     }
     double k = 1.38064852e-23;
-    return (M2 - M*M)/(k*T);
+    return (M2 - absM*absM)/(k*T);
 }
 vec Ising::exp_vals(int steps)
 {
@@ -167,6 +171,7 @@ vec Ising::exp_vals(int steps)
     for (long int i = 0; i < steps; i++)
     {
         step_exp_vals();
+        cout << E << endl;
         expE += E;
         expE2 += E*E;
         expM += M;

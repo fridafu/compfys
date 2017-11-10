@@ -20,23 +20,27 @@ public:
     double magnetization();
     double heat_capacity();
     double magnetic_susceptibility();
+    double E;
+    double M;
+    double E2;
+    double M2;
+    double absM;
+
 private:
     long double expE;
     long double expE2;
     long double expM;
     long double expM2;
     long double expabsM;
-    double absM;
-    double M2;
     double dM;
-    double E2;
+
     int up;
     int down;
     int right;
     int left;
     int fr;
     int fc;
-    double M;
+
     double T;
     double beta;
     double sumdE;
@@ -44,7 +48,7 @@ private:
     mat state;
     int L;
     double J;
-    double E;
+
     double dE;
     int stepcount;
 };
