@@ -171,7 +171,6 @@ vec Ising::exp_vals(int steps)
     for (long int i = 0; i < steps; i++)
     {
         step_exp_vals();
-        cout << E << endl;
         expE += E;
         expE2 += E*E;
         expM += M;
