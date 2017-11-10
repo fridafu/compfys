@@ -3,8 +3,9 @@
 Ising::Ising(double coupling, int l, double temp)
 {
     arma_rng::set_seed_random();
+    k = 1.38064852e-23;
     T = temp;
-    beta = 1./T;
+    beta = 1./(T*k);
     stepcount = 0;
     expE = 0;
     expE2 = 0;
@@ -170,8 +171,8 @@ double Ising::heat_capacity()
     {
         cout << "Expectation values not calculated" << endl;
     }
-    double k = 1.38064852e-23;
-    return (expE2/stepcount - (expE/stepcount)*(expE/stepcount))/(T*T);
+
+    return (expE2/stepcount - (expE/stepcount)*(expE/stepcount))/(T*T*k);
 }
 double Ising::magnetic_susceptibility()
 {
@@ -179,8 +180,8 @@ double Ising::magnetic_susceptibility()
     {
         cout << "Expectation values not calculated" << endl;
     }
-    double k = 1.38064852e-23;
-    return (expM2/stepcount - expabsM*expabsM/(stepcount*stepcount))/(T);
+
+    return (expM2/stepcount - expabsM*expabsM/(stepcount*stepcount))/(T*k);
 }
 void Ising::exp_vals(int steps)
 {

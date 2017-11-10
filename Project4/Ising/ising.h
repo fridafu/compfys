@@ -26,6 +26,7 @@ public:
 
 
 private:
+    double k;
     double r;
     double E;
     double M;
