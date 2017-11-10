@@ -16,41 +16,37 @@ public:
     double energy();
     mat flip_rand_spin(mat S);
     void step_exp_vals();
-    vec exp_vals(int steps);
+    void exp_vals(int steps);
     double magnetization();
     double heat_capacity();
     double magnetic_susceptibility();
-    double E;
-    double M;
-    double E2;
-    double M2;
-    double absM;
+    vec get_expectation_values();
+    double get_energy();
+
+
 
 private:
+    double E;
+    double M;
     long double expE;
     long double expE2;
     long double expM;
     long double expM2;
     long double expabsM;
     double dM;
-
     int up;
     int down;
     int right;
     int left;
     int fr;
     int fc;
-
     double T;
     double beta;
-    double sumdE;
-    double sumdM;
     mat state;
     int L;
     double J;
-
     double dE;
-    int stepcount;
+    long int stepcount;
 };
 
 #endif // ISING_H

@@ -5,8 +5,7 @@ Ising::Ising(double coupling, int l, double temp)
     arma_rng::set_seed_random();
     T = temp;
     beta = 1/(T*1.38064852e-23);
-    stepcount = 1;
-
+    stepcount = 0;
     expE = 0;
     expE2 = 0;
     expM = 0;
@@ -19,6 +18,16 @@ Ising::Ising(double coupling, int l, double temp)
     M = magnetization();
 
 
+}
+vec Ising::get_expectation_values()
+{
+    double EE = expE/stepcount;
+    double EE2 = expE2/stepcount;
+    double MM = expM/stepcount;
+    double MM2 = expM2/stepcount;
+    double absMM = expabsM/stepcount;
+
+    return {EE,EE2,MM,MM2,absMM};
 }
 void Ising::set_state(mat S)
 {
@@ -66,7 +75,6 @@ double Ising::magnetization()
 double Ising::energy()
 {
     E = 0;
-
     for (int i = 0; i < L-1; i++)
     {
         for (int j = 0; j < L-1; j++)
@@ -84,6 +92,12 @@ double Ising::energy()
     E = -J*E;
     return E;
 }
+
+double Ising::get_energy()
+{
+    return energy();
+}
+
 void Ising::step_exp_vals()
 {
     for (int i = 0; i < L*L; i++)
@@ -127,8 +141,6 @@ void Ising::step_exp_vals()
                 left = L - 1;
             }
         }
-
-
         dE = 2*J*state(fr,fc)*(state(up,fc) + state(down,fc) + state(fr,right) + state(fr,left));
         dM = 2*(-state(fr,fc));
 
@@ -139,11 +151,6 @@ void Ising::step_exp_vals()
             M += dM;
         }
     }
-
-    E2 = E*E;
-    M2 = M*M;
-    absM = abs(M);
-
     stepcount += 1;
 
 }
@@ -154,7 +161,7 @@ double Ising::heat_capacity()
         cout << "Expectation values not calculated" << endl;
     }
     double k = 1.38064852e-23;
-    return (E2 - E*E)/(k*T*T);
+    return (expE2/stepcount - expE*expE/(stepcount*stepcount))/(k*T*T);
 }
 double Ising::magnetic_susceptibility()
 {
@@ -163,9 +170,9 @@ double Ising::magnetic_susceptibility()
         cout << "Expectation values not calculated" << endl;
     }
     double k = 1.38064852e-23;
-    return (M2 - absM*absM)/(k*T);
+    return (expM2/stepcount - expabsM*expabsM/(stepcount*stepcount))/(k*T);
 }
-vec Ising::exp_vals(int steps)
+void Ising::exp_vals(int steps)
 {
 
     for (long int i = 0; i < steps; i++)
@@ -175,14 +182,7 @@ vec Ising::exp_vals(int steps)
         expE2 += E*E;
         expM += M;
         expM2 += M*M;
-        expabsM += absM;
-
+        expabsM += abs(M);
     }
-    E = expE/stepcount;
-    E2 = expE2/stepcount;
-    M = expM/stepcount;
-    M2 = expM2/stepcount;
-    absM = expabsM/stepcount;
-    return {E, E2, M, absM, M2};
 }
 
