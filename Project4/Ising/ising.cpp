@@ -106,14 +106,17 @@ void Ising::step_exp_vals()
 
         fr = rand() % L;
         fc = rand() % L;
-        up = fr + 1;
-        down = fr - 1;
+
+        up = fr - 1;
+        down = fr + 1;
         right = fc + 1;
         left = fc - 1;
+
 
         if (fr == 0)
         {
             up = L - 1;
+
             if (L == 2)
             {
                 down = 1;
@@ -139,11 +142,14 @@ void Ising::step_exp_vals()
         else if (fc == L - 1)
         {
             right = 0;
+
             if (L == 2)
             {
                 left = 0;
             }
         }
+
+
 
         dE = 2*J*state(fr,fc)*(state(up,fc) + state(down,fc) + state(fr,right) + state(fr,left));
         dM = 2*(-state(fr,fc));
