@@ -3,12 +3,14 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-INCLUDEPATH += "C:\Users\Stian\Documents\armadillo-8.200.2\include"
-INCLUDEPATH += "C:\Users\Stian\Documents\armadillo-8.200.2\examples\lib_win64"
+INCLUDEPATH += /usr/local/include
+LIBS += -L/usr/local/lib
 
 SOURCES += ising.cpp
 SOURCES += ising.h
 SOURCES += main.cpp
 
-LIBS += -L"C:\Users\Stian\Documents\armadillo-8.200.2\examples\lib_win64" -lblas_win64_MT -L"C:\Users\Stian\Documents\armadillo-8.200.2\examples\lib_win64" -llapack_win64_MT
+LIBS += -larmadillo -llapack -lblas
 
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
