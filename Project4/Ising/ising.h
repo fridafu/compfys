@@ -13,11 +13,11 @@ public:
     Ising(double coupling, int l, double temp);
     mat rand_state();
     void set_state(mat S);
-    double energy();
+    void energy();
     mat flip_rand_spin(mat S);
     void step_exp_vals();
     void exp_vals(int steps);
-    double magnetization();
+    void magnetization();
     double heat_capacity();
     double magnetic_susceptibility();
     vec get_expectation_values();
@@ -26,6 +26,7 @@ public:
 
 
 private:
+    double r;
     double E;
     double M;
     long double expE;

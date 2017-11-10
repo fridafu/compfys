@@ -4,7 +4,7 @@ Ising::Ising(double coupling, int l, double temp)
 {
     arma_rng::set_seed_random();
     T = temp;
-    beta = 1/(T*1.38064852e-23);
+    beta = 1./T;
     stepcount = 0;
     expE = 0;
     expE2 = 0;
@@ -14,8 +14,8 @@ Ising::Ising(double coupling, int l, double temp)
     L = l;
     J = coupling;
     state = rand_state();
-    E = energy();
-    M = magnetization();
+    energy();
+    magnetization();
 
 
 }
@@ -32,8 +32,8 @@ vec Ising::get_expectation_values()
 void Ising::set_state(mat S)
 {
     state = S;
-    E = energy();
-    M = magnetization();
+    energy();
+    magnetization();
 }
 
 
@@ -66,13 +66,12 @@ mat Ising::rand_state()
     return S;
 
 }
-double Ising::magnetization()
+void Ising::magnetization()
 {
     M = accu(state);
-    return M;
 }
 
-double Ising::energy()
+void Ising::energy()
 {
     E = 0;
     for (int i = 0; i < L-1; i++)
@@ -90,24 +89,27 @@ double Ising::energy()
     E += state(L-1,L-1)*state(L-1,0) + state(L-1,L-1)*state(0,L-1);
 
     E = -J*E;
-    return E;
 }
 
 double Ising::get_energy()
 {
-    return energy();
+    energy();
+    return E;
 }
 
 void Ising::step_exp_vals()
 {
+
     for (int i = 0; i < L*L; i++)
     {
+
         fr = rand() % L;
         fc = rand() % L;
         up = fr + 1;
         down = fr - 1;
         right = fc + 1;
         left = fc - 1;
+
         if (fr == 0)
         {
             up = L - 1;
@@ -138,19 +140,27 @@ void Ising::step_exp_vals()
             right = 0;
             if (L == 2)
             {
-                left = L - 1;
+                left = 0;
             }
         }
+
         dE = 2*J*state(fr,fc)*(state(up,fc) + state(down,fc) + state(fr,right) + state(fr,left));
         dM = 2*(-state(fr,fc));
 
-        if (dE <= 0 || double(rand())/RAND_MAX < exp(-beta*dE) )
+        r = double(rand())/RAND_MAX;
+
+
+        if ( (dE <= 0) ||  (r <= exp(-beta*dE)) )
         {
             state(fr,fc) = -state(fr,fc);
+
             E +=  dE;
             M += dM;
         }
+
+
     }
+
     stepcount += 1;
 
 }
@@ -161,7 +171,7 @@ double Ising::heat_capacity()
         cout << "Expectation values not calculated" << endl;
     }
     double k = 1.38064852e-23;
-    return (expE2/stepcount - expE*expE/(stepcount*stepcount))/(k*T*T);
+    return (expE2/stepcount - (expE/stepcount)*(expE/stepcount))/(T*T);
 }
 double Ising::magnetic_susceptibility()
 {
@@ -170,7 +180,7 @@ double Ising::magnetic_susceptibility()
         cout << "Expectation values not calculated" << endl;
     }
     double k = 1.38064852e-23;
-    return (expM2/stepcount - expabsM*expabsM/(stepcount*stepcount))/(k*T);
+    return (expM2/stepcount - expabsM*expabsM/(stepcount*stepcount))/(T);
 }
 void Ising::exp_vals(int steps)
 {
