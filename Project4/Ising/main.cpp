@@ -10,11 +10,11 @@ int main()
 {
     double k = 1.38064852e-23;
     double J = -1;
-    double That = 2;
+    double That = 1;
     double T = That*J/k;
     int L = 2;
     double beta = 1/(k*T);
-    int steps = 10;
+    int steps = 100000;
 
 
     Ising L2 = Ising(J,L,T);
