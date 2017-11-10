@@ -15,7 +15,7 @@ int main()
 
     int L = 2;
     double beta = 1./(T*k);
-    int steps = 100000;
+    int steps = 10000000;
 
 
     Ising L2 = Ising(J,L,T);
@@ -32,7 +32,9 @@ int main()
 
     cout << "analytical Cv = " << Cv << endl;
 
+    double X = (8*(exp(8*beta*J) + 1)/(cosh(8*beta*J) + 3) - (2*(exp(8*beta*J) + 2)/(cosh(8*beta*J) + 3))*(2*(exp(8*beta*J) + 2)/(cosh(8*beta*J) + 3)))/(k*T);
 
+    cout << "analytical X = " << X << endl;
 
 
 
