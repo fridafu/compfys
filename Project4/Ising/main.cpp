@@ -15,7 +15,7 @@ int main()
     double That = 1;
     double T = abs(That*J/k);
     //b)
-
+    /*
 
     int L = 2;
     double beta = 1./(T*k);
@@ -34,9 +34,10 @@ int main()
     cout << "analytical Cv = " << Cv << endl;
     cout << "analytical X = " << X << endl;
 
+    */
 
     //b)
-    /*
+
     ofstream myfileones;
     ofstream myfilerandom;
     int L = 20;
@@ -51,7 +52,8 @@ int main()
     vec expvals1;
     vec expvals2;
 
-
+    myfileones.open("expvalsones.txt");
+    myfilerandom.open("expvalsrandom.txt");
     for (int i = 0; i < totsteps/checkstep; i++)
     {
 
@@ -62,6 +64,8 @@ int main()
         myfileones << expvals1 << endl;
         myfilerandom << expvals2 << endl;
     }
-    */
+    myfileones.close();
+    myfilerandom.close();
+
     return 0;
 }
