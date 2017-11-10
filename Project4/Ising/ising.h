@@ -22,10 +22,11 @@ public:
     double magnetic_susceptibility();
     vec get_expectation_values();
     double get_energy();
-
+    int get_configurations();
 
 
 private:
+    int totaccept;
     double k;
     double r;
     double E;

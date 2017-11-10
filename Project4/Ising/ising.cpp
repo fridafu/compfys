@@ -14,6 +14,7 @@ Ising::Ising(double coupling, int l, double temp)
     expabsM = 0;
     L = l;
     J = coupling;
+    totaccept = 0;
     state = rand_state();
     energy();
     magnetization();
@@ -160,7 +161,7 @@ void Ising::step_exp_vals()
         if ( (dE <= 0) ||  (r <= exp(-beta*dE)) )
         {
             state(fr,fc) = -state(fr,fc);
-
+            totaccept += 1;
             E +=  dE;
             M += dM;
         }
@@ -171,6 +172,12 @@ void Ising::step_exp_vals()
     stepcount += 1;
 
 }
+
+int Ising::get_configurations()
+{
+    return totaccept;
+}
+
 double Ising::heat_capacity()
 {
     if (stepcount == 0)
