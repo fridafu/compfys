@@ -13,6 +13,8 @@ SOURCES += main.cpp \
 HEADERS += \
     planet.h \
     solver.h
+
+
 LIBS += -larmadillo -llapack -lblas
 
 QMAKE_CXXFLAGS_RELEASE -= -O2
