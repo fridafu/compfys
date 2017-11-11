@@ -90,11 +90,15 @@ int main()
     myfilerandom24.close();
     */
 
+
+    //accepted configurations
+    /*
     int LL = 20;
     int acceptconfig1;
     int acceptconfig2;
 
-    vec temperature = linspace(1*T, 2.4*T, 10);
+    vec temperature = linspace(1*T, 2.4*T, 5);
+    vec that = linspace(1,2.4,5);
     mat initstate = ones(LL,LL);
     int totsteps = 10000;
     int checkstep = 10;
@@ -109,19 +113,20 @@ int main()
         L1.set_state(initstate);
         ofstream onesconfig;
         ofstream randomconfig;
+        onesconfig.open("acceptconfigones" + to_string(j+1) + ".txt");
+        randomconfig.open("acceptconfigrand" + to_string(j+1) + ".txt");
         for (int i = 0; i < totsteps/checkstep; i++)
         {
 
-            onesconfig.open("acceptconfigones" + to_string(j+1) + ".txt");
-            randomconfig.open("acceptconfigrand" + to_string(j+1) + ".txt");
+
 
             L1.exp_vals(checkstep);
             acceptconfig1 = L1.get_configurations();
             L2.exp_vals(checkstep);
             acceptconfig2 = L2.get_configurations();
 
-            onesconfig << acceptconfig1 << " " << temperature(j) << " " << (i+1)*checkstep << endl;
-            randomconfig << acceptconfig2 << " " << temperature(j) << " " << (i+1)*checkstep << endl;
+            onesconfig << acceptconfig1 << " " << that(j) << " " << (i+1)*checkstep << endl;
+            randomconfig << acceptconfig2 << " " << that(j) << " " << (i+1)*checkstep << endl;
 
 
         }
@@ -129,7 +134,7 @@ int main()
         randomconfig.close();
 
     }
-
+    */
 
     return 0;
 
