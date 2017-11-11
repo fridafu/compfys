@@ -24,6 +24,7 @@ public:
     double get_energy();
     int get_configurations();
     void reset_expectation_values();
+    double energy_probability(int inital_steps, int steps, int En);
 
 
 private:

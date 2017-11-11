@@ -114,9 +114,8 @@ void Ising::energy()
 }
 
 double Ising::get_energy()
-//calculates and returns the energy of the system
+//returns the energy of the system
 {
-    energy();
     return E;
 }
 
@@ -236,5 +235,23 @@ void Ising::exp_vals(int steps)
         expM2 += M*M;
         expabsM += abs(M);
     }
+}
+double Ising::energy_probability(int initial_steps, int steps, int En)
+//This function will do 'inital_steps' steps with the metropolis algorithm, check the energy of the system
+//and then calculate the probability of the this energy occuring.
+{
+    exp_vals(initial_steps);
+    reset_expectation_values();
+    long int counter = 0;
+    for (long int i = 0; i < steps; i++)
+    {
+        exp_vals(1);
+        if (En == E)
+        {
+            counter++;
+        }
+
+    }
+    return double(counter)/steps;
 }
 
