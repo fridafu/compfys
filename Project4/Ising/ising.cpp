@@ -42,6 +42,7 @@ void Ising::reset_expectation_values()
     totaccept = 0;
     stepcount = 0;
     expE = 0;
+    expE2 = 0;
     expM = 0;
     expM2 = 0;
     expabsM = 0;
