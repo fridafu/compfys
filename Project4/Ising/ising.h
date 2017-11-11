@@ -15,7 +15,7 @@ public:
     void set_state(mat S);
     void energy();
     mat flip_rand_spin(mat S);
-    void step_exp_vals();
+    void step_metropolis();
     void exp_vals(int steps);
     void magnetization();
     double heat_capacity();
@@ -23,6 +23,7 @@ public:
     vec get_expectation_values();
     double get_energy();
     int get_configurations();
+    void reset_expectation_values();
 
 
 private:

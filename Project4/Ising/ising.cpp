@@ -1,6 +1,10 @@
 #include "ising.h"
 
 Ising::Ising(double coupling, int l, double temp)
+//coupling is a constant expressing the strength of the interaction between neighboring spins
+//l is the dimension of the 2D lattice (lxl)
+//temp is the temperature in kelvin.
+//When initializing object, a random state is generated.
 {
     arma_rng::set_seed_random();
     k = 1.38064852e-23;
@@ -22,6 +26,7 @@ Ising::Ising(double coupling, int l, double temp)
 
 }
 vec Ising::get_expectation_values()
+//returns expectation values {mean energy, mean energy squared, mean magnetization, mean magnetization squared, mean absolute magnetization}
 {
     double EE = expE/stepcount;
     double EE2 = expE2/stepcount;
@@ -31,7 +36,18 @@ vec Ising::get_expectation_values()
 
     return {EE,EE2,MM,MM2,absMM};
 }
+void Ising::reset_expectation_values()
+//resets the expectation values
+{
+    totaccept = 0;
+    stepcount = 0;
+    expE = 0;
+    expM = 0;
+    expM2 = 0;
+    expabsM = 0;
+}
 void Ising::set_state(mat S)
+//takes a matrix S as input and sets it as the state.
 {
     state = S;
     energy();
@@ -40,6 +56,7 @@ void Ising::set_state(mat S)
 
 
 mat Ising::flip_rand_spin(mat S)
+//flips random spin in input matrix.
 {
 
     fr = rand() % L;
@@ -48,6 +65,7 @@ mat Ising::flip_rand_spin(mat S)
     return S;
 }
 mat Ising::rand_state()
+//generates and returns a random state
 {
 
     mat S = randu(L,L);
@@ -69,11 +87,13 @@ mat Ising::rand_state()
 
 }
 void Ising::magnetization()
+//calculates the magnetization and stores it in variable M
 {
     M = accu(state);
 }
 
 void Ising::energy()
+//calculates the energy and stores it in variable E
 {
     E = 0;
     for (int i = 0; i < L-1; i++)
@@ -94,12 +114,16 @@ void Ising::energy()
 }
 
 double Ising::get_energy()
+//calculates and returns the energy of the system
 {
     energy();
     return E;
 }
 
-void Ising::step_exp_vals()
+void Ising::step_metropolis()
+//performs one step of the metropolis algorithm
+//stores the number of times this function is used in variable stepcount
+//stores the number of accepted configurations in variable totaccept
 {
 
     for (int i = 0; i < L*L; i++)
@@ -174,11 +198,13 @@ void Ising::step_exp_vals()
 }
 
 int Ising::get_configurations()
+//returns the total accepted configurations.
 {
     return totaccept;
 }
 
 double Ising::heat_capacity()
+//returns the heat capacity
 {
     if (stepcount == 0)
     {
@@ -188,6 +214,7 @@ double Ising::heat_capacity()
     return (expE2/stepcount - (expE/stepcount)*(expE/stepcount))/(T*T*k);
 }
 double Ising::magnetic_susceptibility()
+//returns the magnetic susceptibility
 {
     if (stepcount == 0)
     {
@@ -197,11 +224,12 @@ double Ising::magnetic_susceptibility()
     return (expM2/stepcount - expabsM*expabsM/(stepcount*stepcount))/(T*k);
 }
 void Ising::exp_vals(int steps)
+//calculates expectation values with steps steps.
 {
 
     for (long int i = 0; i < steps; i++)
     {
-        step_exp_vals();
+        step_metropolis();
         expE += E;
         expE2 += E*E;
         expM += M;
