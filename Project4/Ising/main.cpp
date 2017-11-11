@@ -97,8 +97,8 @@ int main()
     int acceptconfig1;
     int acceptconfig2;
 
-    vec temperature = linspace(1*T, 2.4*T, 5);
-    vec that = linspace(1,2.4,5);
+    vec temperature = linspace(1*T, 2.4*T, 20);
+    vec that = linspace(1,2.4,20);
     mat initstate = ones(LL,LL);
     int totsteps = 10000;
     int checkstep = 10;
@@ -132,9 +132,9 @@ int main()
         }
         onesconfig.close();
         randomconfig.close();
-
-    }
     */
+    }
+
 
     return 0;
 
