@@ -33,7 +33,6 @@ vec Ising::get_expectation_values()
     double MM = expM/stepcount;
     double MM2 = expM2/stepcount;
     double absMM = expabsM/stepcount;
-
     return {EE,EE2,MM,MM2,absMM};
 }
 void Ising::reset_expectation_values()
