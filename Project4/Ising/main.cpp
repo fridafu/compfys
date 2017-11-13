@@ -266,8 +266,8 @@ P(-764) = 1e-05
 Variance sigma_squared = 9.4708
 __________________________________________________________________
 */
-    /*
-    int idum;
+
+    //int idum;
     int n_spins, mcs, my_rank, numprocs;
     double average[5], total_average[5], initial_temp, final_temp, temp_step;
 
@@ -290,7 +290,7 @@ __________________________________________________________________
     if ( (my_rank == numprocs-1) &&( myloop_end < mcs) ) myloop_end = mcs;
 
     //own seed to individual processors
-    idum = -1-my_rank;
+    //idum = -1-my_rank;
     // random starting point
 
     ofstream myfile;
@@ -340,12 +340,7 @@ __________________________________________________________________
     myfile.close();
 
     MPI_Finalize ();
-    */
 
-    srand(2);
-    cout << rand()%10 << endl;
-    srand(2);
-    cout << rand()%10 << endl;
 
     return 0;
 
