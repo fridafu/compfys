@@ -12,20 +12,26 @@ using namespace arma;
 
 int main(int argc, char* argv[])
 {
-    /*
 
+    /*
     double k = 1.38064852e-23;
     double J = 1;
     double That = 1;
     double T = abs(That*J/k);
-
-
+    */
+    /*
     //b)
-
-
     int L = 2;
+
+    ofstream myfile;
+    myfile.open("compare.txt");
+    int L = 2;
+    Ising L1 = Ising(J,L,T);
+
+
+
     double beta = 1./(T*k);
-    int steps = 1000000;
+    int steps = 1000;
     double z = 2*(exp(-8*J*beta) + exp(8*J*beta)) + 12;
     double M  = 0;
     double JB8 = 8*beta*J;
@@ -36,9 +42,13 @@ int main(int argc, char* argv[])
     double Cv = ((-128*J*J)/(T*T))*((1/z)*cosh(JB8) - (8/(z*z))*sinh(JB8)*sinh(JB8));
     double X = (8*(exp(JB8) + 1)/(cosh(JB8) + 3) - (2*(exp(JB8) + 2)/(cosh(JB8) + 3))*(2*(exp(JB8) + 2)/(cosh(JB8) + 3)))/(k*T);
 
-    Ising L1 = Ising(J,L,T);
+
     L1.exp_vals(steps);
     vec expvals = L1.get_expectation_values();
+
+
+
+    cout << "1000000 steps:" << endl;
     cout << "calculated energy = " << expvals(0) << endl;
     cout << "analytical energy = " << mE << endl;
     cout << "calculated energy^2 = " << expvals(1) << endl;
@@ -57,7 +67,7 @@ int main(int argc, char* argv[])
     cout << "_______________________________________________" << endl;
     L1.reset_expectation_values();
     L1.exp_vals(10*steps);
-
+    cout << "reset expectation values. 10000000 new steps:" << endl;
     vec expvals2 = L1.get_expectation_values();
     cout << "HERE IS ANOTHER ROUND" << endl;
     cout << "calculated energy = " << expvals2(0) << endl;
@@ -78,35 +88,37 @@ int main(int argc, char* argv[])
     */
     /*
 terminal output:
-calculated energy = -7.98461
+1000000 steps:
+calculated energy = -7.98421
 analytical energy = -7.98393
-calculated energy^2 = 63.8769
+calculated energy^2 = 63.8737
 analytical energy^2 = 63.8714
-calculated magnetization = 0.077706
+calculated magnetization = 0.0602226
 analytical magnetization = 0
-calculated abs(magnetization) = 3.99494
+calculated abs(magnetization) = 3.99474
 analytical abs(magnetization) = 3.99464
-calculated magnetization^2 = 15.9745
+calculated magnetization^2 = 15.9737
 analytical magnetization^2 = 15.9732
-calculated Cv = 1.6968e-24
+calculated Cv = 1.74081e-24
 analytical Cv = 6.06309e-45
-calculated X = 0.0149544
+calculated X = 0.0157248
 analytical X = 0.016043
 _______________________________________________
+reset expectation values. 10000000 new steps:
 HERE IS ANOTHER ROUND
-calculated energy = -7.9839
+calculated energy = -7.98396
 analytical energy = -7.98393
-calculated energy^2 = 63.8712
+calculated energy^2 = 63.8717
 analytical energy^2 = 63.8714
-calculated magnetization = -0.0677004
+calculated magnetization = -0.00419586
 analytical magnetization = 0
-calculated abs(magnetization) = 3.99461
+calculated abs(magnetization) = 3.99465
 analytical abs(magnetization) = 3.99464
-calculated magnetization^2 = 15.9731
+calculated magnetization^2 = 15.9733
 analytical magnetization^2 = 15.9732
-calculated Cv = 1.77514e-24
+calculated Cv = 1.76816e-24
 analytical Cv = 6.06309e-45
-calculated X = 0.0162285
+calculated X = 0.0160374
 analytical X = 0.016043
     */
 
@@ -266,8 +278,8 @@ P(-764) = 1e-05
 Variance sigma_squared = 9.4708
 __________________________________________________________________
 */
-
-    //int idum;
+    /*
+    int idum;
     int n_spins, mcs, my_rank, numprocs;
     double average[5], total_average[5], initial_temp, final_temp, temp_step;
 
@@ -290,7 +302,8 @@ __________________________________________________________________
     if ( (my_rank == numprocs-1) &&( myloop_end < mcs) ) myloop_end = mcs;
 
     //own seed to individual processors
-    //idum = -1-my_rank;
+    idum = -1-my_rank;
+    srand(idum);
     // random starting point
 
     ofstream myfile;
@@ -341,7 +354,7 @@ __________________________________________________________________
 
     MPI_Finalize ();
 
-
+    */
     return 0;
 
 }
