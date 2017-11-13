@@ -3,18 +3,20 @@
 #include "ising.h"
 #include <iostream>
 #include <fstream>
+#include <mpi.h>
 
 using namespace std;
 using namespace arma;
 
 
-int main()
+int main(int nargs, char* args[])
 {
 
     double k = 1.38064852e-23;
     double J = 1;
     double That = 1;
     double T = abs(That*J/k);
+
 
     //b)
     /*
@@ -262,6 +264,51 @@ P(-764) = 1e-05
 Variance sigma_squared = 9.4708
 __________________________________________________________________
 */
+    char *outfilename;
+    long idum;
+    int **spin_matrix, n_spins, mcs, my_rank, numprocs; double w[17], average[5], total_average[5],
+        initial_temp, final_temp, E, M, temp_step;
+
+
+    MPI_Init (&argc, &argv);
+    MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
+    MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
+    if (my_rank == 0 && argc <= 1)
+    {
+        cout << "Bad Usage: " << argv[0] << " read output file" << endl;
+        exit(1);
+    }
+
+    n_spins = 40; mcs = 1000000; initial_temp = 2.4; final_temp = 2.7; temp_step =0.1;
+
+    MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast (&final_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast (&temp_step, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    // every node has its own seed for the random numbers, this is important else
+    // if one starts with the same seed, one ends with the same random numbers
+    idum = -1-my_rank;
+    // random starting point
+
+    //make loop over temperatures
+
+    //perform monte carlo here
+
+    //end monte carlo here
+
+    //find total average
+
+    for( int i =0; i < 5; i++)
+    {
+        MPI_Reduce(&average[i], &total_average[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    }
+
+    //end loop over temperatures here
+
+    MPI_Finalize ();
+
+
 
     return 0;
 
