@@ -301,6 +301,8 @@ __________________________________________________________________
     double T;
     double k = 1.38064852e-23;
     double J = 1;
+    double E;
+    double M;
 
     for (double That = initial_temp; initial_temp <= final_temp; initial_temp += temp_step)
     {
@@ -311,18 +313,14 @@ __________________________________________________________________
         for (long int i = 0; i < mcs; i++)
         {
             L1.step_metropolis(idum);
+            E = L1.get_energy();
+            M = L1.get_magnetization();
+            average[0] += E; average[1] += E*E; average[2] += M; average[3] += M*M; average[4] += abs(M);
         }
 
         //end monte carlo here
-        exp_vals = L1.get_expectation_values();
+
         //find total average
-
-        for (int i = 0; i < 5; i++)
-        {
-            average[i] = exp_vals(i);
-        }
-
-
         for( int i =0; i < 5; i++)
         {
 
@@ -332,8 +330,8 @@ __________________________________________________________________
         if ( my_rank == 0)
         {
 
-            myfile << That << " " << n_spins << " " << mcs << " " << total_average[0] << " " << total_average[1] << " "
-                   << total_average[2] << " " << total_average[3] << " " << total_average[4] << endl;
+            myfile << That << " " << n_spins << " " << mcs << " " << total_average[0]/mcs << " " << total_average[1]/mcs << " "
+                   << total_average[2]/mcs << " " << total_average[3]/mcs << " " << total_average[4]/mcs << endl;
         }
 
     }

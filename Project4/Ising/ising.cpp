@@ -116,6 +116,10 @@ void Ising::energy()
     E = -J*E;
 }
 
+double Ising::get_magnetization()
+{
+    return M;
+}
 double Ising::get_energy()
 //returns the energy of the system
 {
