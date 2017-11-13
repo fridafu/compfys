@@ -276,12 +276,7 @@ __________________________________________________________________
     MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
 
-    //if (my_rank == 0 && argc <= 1)
-    //{
-     //   cout << "Bad Usage: " << argv[0] << " read output file" << endl;
-      //  exit(1);
-    //}
-
+    //Lattice size, cycles
     n_spins = 20; mcs = 1000000; initial_temp = 1.0; final_temp = 2.4; temp_step = 0.2;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -294,29 +289,30 @@ __________________________________________________________________
     int myloop_end = (my_rank+1)*no_intervalls;
     if ( (my_rank == numprocs-1) &&( myloop_end < mcs) ) myloop_end = mcs;
 
-    // every node has its own seed for the random numbers, this is important else
-    // if one starts with the same seed, one ends with the same random numbers
+    //own seed to individual processors
     idum = -1-my_rank;
     // random starting point
 
     ofstream myfile;
     myfile.open("L70.txt");
 
-    //make loop over temperatures
+
     double T;
     double k = 1.38064852e-23;
     double J = 1;
     double E;
     double M;
 
+    //loop over temperatures
     for (double That = initial_temp; That <= final_temp; That += temp_step)
     {
+        //Initialize energy, magnetization and averages
         E = M = 0;
         T = abs(That*J/k);
         average[0] = 0; average[1] = 0; average[2] = 0; average[3] = 0; average[4] = 0;
-    //perform monte carlo here
         Ising L1 = Ising(J,n_spins,T);
 
+        //monte carlo loop
         for (int cycles = myloop_begin; cycles <= myloop_end; cycles++)
         {
             L1.step_metropolis();
@@ -324,8 +320,6 @@ __________________________________________________________________
             M = L1.get_magnetization();
             average[0] += E; average[1] += E*E; average[2] += M; average[3] += M*M; average[4] += abs(M);
         }
-
-        //end monte carlo here
 
         //find total average
         for( int i =0; i < 5; i++)
@@ -342,7 +336,7 @@ __________________________________________________________________
         }
 
     }
-    //end loop over temperatures here
+
     myfile.close();
 
     MPI_Finalize ();

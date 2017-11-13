@@ -117,6 +117,7 @@ void Ising::energy()
 }
 
 double Ising::get_magnetization()
+//returns the magnetization of the system
 {
     return M;
 }
