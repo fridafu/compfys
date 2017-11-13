@@ -282,7 +282,7 @@ __________________________________________________________________
       //  exit(1);
     //}
 
-    n_spins = 10; mcs = 1000000; initial_temp = 2.0; final_temp = 2.4; temp_step = 0.1;
+    n_spins = 20; mcs = 1000000; initial_temp = 1.0; final_temp = 1.4; temp_step = 0.1;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -329,8 +329,12 @@ __________________________________________________________________
             MPI_Reduce(&average[i], &total_average[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
         }
 
-        myfile << That << " " << n_spins << " " << mcs << " " << total_average[0] << " " << total_average[1] << " "
-               << total_average[2] << " " << total_average[3] << " " << total_average[4] << endl;
+        if ( my_rank == 0)
+        {
+
+            myfile << That << " " << n_spins << " " << mcs << " " << total_average[0] << " " << total_average[1] << " "
+                   << total_average[2] << " " << total_average[3] << " " << total_average[4] << endl;
+        }
 
     }
     //end loop over temperatures here
