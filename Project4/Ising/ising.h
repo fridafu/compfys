@@ -27,7 +27,9 @@ public:
     double energy_probability(int inital_steps, int steps, int En);
 
 
+
 private:
+    int initseed;
     int totaccept;
     double k;
     double r;

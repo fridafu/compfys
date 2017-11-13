@@ -22,6 +22,7 @@ Ising::Ising(double coupling, int l, double temp)
     state = rand_state();
     energy();
     magnetization();
+    initseed = rand();
 
 
 }
@@ -119,12 +120,12 @@ double Ising::get_energy()
     return E;
 }
 
-void Ising::step_metropolis()
+void Ising::step_metropolis(int seed)
 //performs one step of the metropolis algorithm
 //stores the number of times this function is used in variable stepcount
 //stores the number of accepted configurations in variable totaccept
 {
-
+    srand(seed);
     for (int i = 0; i < L*L; i++)
     {
 
@@ -228,7 +229,7 @@ void Ising::exp_vals(int steps)
 
     for (long int i = 0; i < steps; i++)
     {
-        step_metropolis();
+        step_metropolis(initseed);
         expE += E;
         expE2 += E*E;
         expM += M;
