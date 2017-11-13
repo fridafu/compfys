@@ -270,7 +270,7 @@ __________________________________________________________________
     int idum;
     int n_spins, mcs, my_rank, numprocs;
     double average[5], total_average[5], initial_temp, final_temp, temp_step;
-    vec exp_vals;
+
 
     MPI_Init (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
@@ -288,6 +288,11 @@ __________________________________________________________________
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast (&final_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast (&temp_step, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    int no_intervalls = mcs/numprocs;
+    int myloop_begin = my_rank*no_intervalls + 1;
+    int myloop_end = (my_rank+1)*no_intervalls;
+    if ( (my_rank == numprocs-1) &&( myloop_end < mcs) ) myloop_end = mcs;
 
     // every node has its own seed for the random numbers, this is important else
     // if one starts with the same seed, one ends with the same random numbers
@@ -310,7 +315,7 @@ __________________________________________________________________
     //perform monte carlo here
         Ising L1 = Ising(J,n_spins,T);
 
-        for (long int i = 0; i < mcs; i++)
+        for (int cycles = myloop_begin; cycles <= myloop_end; cycles++)
         {
             L1.step_metropolis(idum);
             E = L1.get_energy();
