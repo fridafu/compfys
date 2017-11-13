@@ -289,7 +289,7 @@ __________________________________________________________________
     MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
 
     //Lattice size, cycles
-    n_spins = 20; mcs = 1000000; initial_temp = 1.0; final_temp = 2.4; temp_step = 0.2;
+    n_spins = 40; mcs = 1000000; initial_temp = 2.0; final_temp = 2.3; temp_step = 0.025;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -307,7 +307,7 @@ __________________________________________________________________
     // random starting point
 
     ofstream myfile;
-    myfile.open("L70.txt");
+    myfile.open("L40.txt");
 
 
     double T;
