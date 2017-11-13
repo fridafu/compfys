@@ -16,13 +16,13 @@ int main(int argc, char* argv[])
     /*
     double k = 1.38064852e-23;
     double J = 1;
-    double That = 1;
+    double That = 2.4;
     double T = abs(That*J/k);
     */
 
     //b)
-    /*
 
+    /*
     int L = 2;
     double beta = 1./(T*k);
     int steps = 1000000;
@@ -282,7 +282,7 @@ __________________________________________________________________
       //  exit(1);
     //}
 
-    n_spins = 20; mcs = 1000000; initial_temp = 1.0; final_temp = 1.4; temp_step = 0.1;
+    n_spins = 20; mcs = 10000; initial_temp = 1.0; final_temp = 2.4; temp_step = 0.2;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -309,15 +309,16 @@ __________________________________________________________________
     double E;
     double M;
 
-    for (double That = initial_temp; initial_temp <= final_temp; initial_temp += temp_step)
+    for (double That = initial_temp; That <= final_temp; That += temp_step)
     {
+        E = M = 0;
         T = abs(That*J/k);
     //perform monte carlo here
         Ising L1 = Ising(J,n_spins,T);
 
         for (int cycles = myloop_begin; cycles <= myloop_end; cycles++)
         {
-            L1.step_metropolis(idum);
+            L1.step_metropolis();
             E = L1.get_energy();
             M = L1.get_magnetization();
             average[0] += E; average[1] += E*E; average[2] += M; average[3] += M*M; average[4] += abs(M);
