@@ -321,8 +321,7 @@ __________________________________________________________________
         {
             average[i] = exp_vals(i);
         }
-        myfile << That << " " << n_spins << " " << mcs << " " << exp_vals[0] << " " << exp_vals[1] << " "
-               << exp_vals[2] << " " << exp_vals[3] << " " << exp_vals[4] << endl;
+
 
         for( int i =0; i < 5; i++)
         {
@@ -330,7 +329,8 @@ __________________________________________________________________
             MPI_Reduce(&average[i], &total_average[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
         }
 
-
+        myfile << That << " " << n_spins << " " << mcs << " " << total_average[0] << " " << total_average[1] << " "
+               << total_average[2] << " " << total_average[3] << " " << total_average[4] << endl;
 
     }
     //end loop over temperatures here
