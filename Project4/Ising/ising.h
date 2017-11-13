@@ -15,7 +15,7 @@ public:
     void set_state(mat S);
     void energy();
     mat flip_rand_spin(mat S);
-    void step_metropolis();
+    void step_metropolis(int idum);
     void exp_vals(int steps);
     void magnetization();
     double heat_capacity();

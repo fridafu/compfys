@@ -4,23 +4,25 @@
 #include <iostream>
 #include <fstream>
 #include <mpi.h>
+#include "ising.cpp"
 
 using namespace std;
 using namespace arma;
 
 
-int main(int nargs, char* args[])
+int main(int argc, char* argv[])
 {
 
+    /*
     double k = 1.38064852e-23;
     double J = 1;
     double That = 1;
     double T = abs(That*J/k);
-
+    */
 
     //b)
     /*
-    //
+
     int L = 2;
     double beta = 1./(T*k);
     int steps = 1000000;
@@ -72,7 +74,7 @@ int main(int nargs, char* args[])
     cout << "analytical Cv = " << Cv << endl;
     cout << "calculated X = " << L1.magnetic_susceptibility() << endl;
     cout << "analytical X = " << X << endl;
-
+    */
 
     /*
 terminal output:
@@ -234,7 +236,7 @@ analytical X = 0.016043
     */
 
 
-    /*
+/*
 Terminal output:
 P(-800) = 0.8698
 Variance sigma_squared = 9.31287
@@ -264,22 +266,23 @@ P(-764) = 1e-05
 Variance sigma_squared = 9.4708
 __________________________________________________________________
 */
-    char *outfilename;
-    long idum;
-    int **spin_matrix, n_spins, mcs, my_rank, numprocs; double w[17], average[5], total_average[5],
-        initial_temp, final_temp, E, M, temp_step;
 
+    int idum;
+    int n_spins, mcs, my_rank, numprocs;
+    double average[5], total_average[5], initial_temp, final_temp, temp_step;
+    vec exp_vals;
 
     MPI_Init (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
-    if (my_rank == 0 && argc <= 1)
-    {
-        cout << "Bad Usage: " << argv[0] << " read output file" << endl;
-        exit(1);
-    }
 
-    n_spins = 40; mcs = 1000000; initial_temp = 2.4; final_temp = 2.7; temp_step =0.1;
+    //if (my_rank == 0 && argc <= 1)
+    //{
+     //   cout << "Bad Usage: " << argv[0] << " read output file" << endl;
+      //  exit(1);
+    //}
+
+    n_spins = 10; mcs = 1000000; initial_temp = 2.0; final_temp = 2.4; temp_step = 0.1;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -291,22 +294,50 @@ __________________________________________________________________
     idum = -1-my_rank;
     // random starting point
 
+    ofstream myfile;
+    myfile.open("L70.txt");
+
     //make loop over temperatures
+    double T;
+    double k = 1.38064852e-23;
+    double J = 1;
 
-    //perform monte carlo here
-
-    //end monte carlo here
-
-    //find total average
-
-    for( int i =0; i < 5; i++)
+    for (double That = initial_temp; initial_temp <= final_temp; initial_temp += temp_step)
     {
-        MPI_Reduce(&average[i], &total_average[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-    }
+        T = abs(That*J/k);
+    //perform monte carlo here
+        Ising L1 = Ising(J,n_spins,T);
 
+        for (long int i = 0; i < mcs; i++)
+        {
+            L1.step_metropolis(idum);
+        }
+
+        //end monte carlo here
+        exp_vals = L1.get_expectation_values();
+        //find total average
+
+        for (int i = 0; i < 5; i++)
+        {
+            average[i] = exp_vals(i);
+        }
+        myfile << That << " " << n_spins << " " << mcs << " " << exp_vals[0] << " " << exp_vals[1] << " "
+               << exp_vals[2] << " " << exp_vals[3] << " " << exp_vals[4] << endl;
+
+        for( int i =0; i < 5; i++)
+        {
+
+            MPI_Reduce(&average[i], &total_average[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+        }
+
+
+
+    }
     //end loop over temperatures here
+    myfile.close();
 
     MPI_Finalize ();
+
 
 
 
