@@ -278,7 +278,7 @@ P(-764) = 1e-05
 Variance sigma_squared = 9.4708
 __________________________________________________________________
 */
-    /*
+
     int idum;
     int n_spins, mcs, my_rank, numprocs;
     double average[5], total_average[5], initial_temp, final_temp, temp_step;
@@ -354,7 +354,7 @@ __________________________________________________________________
 
     MPI_Finalize ();
 
-    */
+
     return 0;
 
 }
