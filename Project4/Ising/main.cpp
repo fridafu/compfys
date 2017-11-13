@@ -12,17 +12,17 @@ using namespace arma;
 
 int main(int argc, char* argv[])
 {
-
     /*
+
     double k = 1.38064852e-23;
     double J = 1;
-    double That = 2.4;
+    double That = 1;
     double T = abs(That*J/k);
-    */
+
 
     //b)
 
-    /*
+
     int L = 2;
     double beta = 1./(T*k);
     int steps = 1000000;
@@ -74,8 +74,8 @@ int main(int argc, char* argv[])
     cout << "analytical Cv = " << Cv << endl;
     cout << "calculated X = " << L1.magnetic_susceptibility() << endl;
     cout << "analytical X = " << X << endl;
-    */
 
+    */
     /*
 terminal output:
 calculated energy = -7.98461
@@ -282,7 +282,7 @@ __________________________________________________________________
       //  exit(1);
     //}
 
-    n_spins = 20; mcs = 10000; initial_temp = 1.0; final_temp = 2.4; temp_step = 0.2;
+    n_spins = 20; mcs = 1000000; initial_temp = 1.0; final_temp = 2.4; temp_step = 0.2;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -313,6 +313,7 @@ __________________________________________________________________
     {
         E = M = 0;
         T = abs(That*J/k);
+        average[0] = 0; average[1] = 0; average[2] = 0; average[3] = 0; average[4] = 0;
     //perform monte carlo here
         Ising L1 = Ising(J,n_spins,T);
 
