@@ -33,8 +33,8 @@ for i, file in enumerate(files):
         M2.append(float(x.split(' ')[6]))
         Mabs.append(float(x.split(' ')[7]))
 #print E2[-1] - (E[-1])**2)/(k*(T[-1])**2)
-        cv.append((E2[-1] - (E[-1])**2)/(k*(T[-1])**2))
-        sus.append((M2[-1] - (Mabs[-1])**2)/(k*T[-1]))
+        cv.append((E2[-1] - (E[-1])**2)/((T[-1])**2))
+        sus.append((M2[-1] - (Mabs[-1])**2)/(T[-1]))
 
     E = array(E)/Ls[i]
     E2 = array(E2)/Ls[i]
