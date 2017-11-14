@@ -132,6 +132,7 @@ void Ising::step_metropolis()
 //stores the number of times this function is used in variable stepcount
 //stores the number of accepted configurations in variable totaccept
 {
+
     for (int i = 0; i < L*L; i++)
     {
 
@@ -187,7 +188,6 @@ void Ising::step_metropolis()
 
         r = double(rand())/RAND_MAX;
 
-
         if ( (dE <= 0) ||  (r <= exp(-beta*dE)) )
         {
             state(fr,fc) = -state(fr,fc);
@@ -195,7 +195,6 @@ void Ising::step_metropolis()
             E +=  dE;
             M += dM;
         }
-
 
     }
 
