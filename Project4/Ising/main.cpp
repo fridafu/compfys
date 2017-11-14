@@ -620,7 +620,7 @@ Computed variance = 3638.22
     MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
 
     //Lattice size, cycles
-    n_spins = 40; mcs = 1000000; initial_temp = 2.2; final_temp = 2.32; temp_step = 0.01;
+    n_spins = 100; mcs = 1000000; initial_temp = 2.20; final_temp = 2.40; temp_step = 0.005;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -638,7 +638,7 @@ Computed variance = 3638.22
     // random starting point
 
     ofstream myfile;
-    myfile.open("L80.txt");
+    myfile.open("L100.txt");
 
 
     double T;
