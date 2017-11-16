@@ -11,22 +11,58 @@ class Ising
 {
 public:
     Ising(double coupling, int l, double temp);
-    mat rand_state();
-    void set_state(mat S);
-    void energy();
-    mat flip_rand_spin(mat S);
-    void step_metropolis();
-    void exp_vals(int steps);
-    void magnetization();
-    double heat_capacity();
-    double magnetic_susceptibility();
-    vec get_expectation_values();
-    double get_energy();
-    int get_configurations();
-    void reset_expectation_values();
-    double energy_probability(int inital_steps, int steps, int En);
-    double get_magnetization();
+    //coupling is a constant expressing the strength of the interaction between neighboring spins
+    //l is the dimension of the 2D lattice (lxl)
+    //temp is the temperature in kelvin.
+    //When initializing object, a random state is generated.
 
+    mat rand_state();
+    //generates and returns a random state
+
+    void set_state(mat S);
+    //takes a matrix S as input and sets it as the state.
+
+    void energy();
+    //calculates the energy and stores it in variable E
+
+    mat flip_rand_spin(mat S);
+    //flips random spin in input matrix.
+
+    void step_metropolis();
+    //performs one step of the metropolis algorithm
+    //stores the number of times this function is used in variable stepcount
+    //stores the number of accepted configurations in variable totaccept
+
+    void exp_vals(int steps);
+    //calculates expectation values with 'steps' steps.
+
+    void magnetization();
+    //calculates the magnetization and stores it in variable M
+
+    double heat_capacity();
+    //returns the heat capacity
+
+    double magnetic_susceptibility();
+    //returns the magnetic susceptibility
+
+    vec get_expectation_values();
+    //returns expectation values {mean energy, mean energy squared, mean magnetization, mean magnetization squared, mean absolute magnetization}
+
+    double get_energy();
+    //returns the energy of the system
+
+    int get_configurations();
+    //returns the total accepted configurations.
+
+    void reset_expectation_values();
+    //resets the expectation values
+
+    double energy_probability(int inital_steps, int steps, int En);
+    //This function will do 'inital_steps' steps with the metropolis algorithm, then count the number of times energy En occurs
+    //and return the probability P(En).
+
+    double get_magnetization();
+    //returns the magnetization of the system
 
 
 private:
