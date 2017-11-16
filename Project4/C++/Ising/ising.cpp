@@ -140,6 +140,7 @@ void Ising::step_metropolis()
         fr = rand() % L;
         fc = rand() % L;
 
+        //periodic boundary conditions:
         up = fr - 1;
         down = fr + 1;
         right = fc + 1;
@@ -150,7 +151,7 @@ void Ising::step_metropolis()
         {
             up = L - 1;
 
-            if (L == 2)
+            if (L == 2) //special case L = 2
             {
                 down = 1;
             }
@@ -181,7 +182,7 @@ void Ising::step_metropolis()
                 left = 0;
             }
         }
-
+        //
 
 
         dE = 2*J*state(fr,fc)*(state(up,fc) + state(down,fc) + state(fr,right) + state(fr,left));
