@@ -13,6 +13,92 @@ using namespace arma;
 int main(int argc, char* argv[])
 {
 
+    int idum;
+    int n_spins, mcs, my_rank, numprocs;
+    double average[5], total_average[5], initial_temp, final_temp, temp_step;
+
+
+    MPI_Init (&argc, &argv);
+    MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
+    MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
+
+    //Lattice size, cycles
+    n_spins = 40; mcs = 1000000; initial_temp = 2.20; final_temp = 2.40; temp_step = 0.005;
+
+    MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast (&final_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast (&temp_step, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    int no_intervalls = mcs/numprocs;
+    int myloop_begin = my_rank*no_intervalls + 1;
+    int myloop_end = (my_rank+1)*no_intervalls;
+    if ( (my_rank == numprocs-1) &&( myloop_end < mcs) ) myloop_end = mcs;
+
+    //own seed to individual processors
+    idum = -1-my_rank;
+    srand(idum);
+    // random starting point
+
+    ofstream myfile;
+    myfile.open("L40.txt");
+
+
+    double T;
+    double k = 1.38064852e-23;
+    double J = 1;
+    double E;
+    double M;
+
+    //loop over temperatures
+    for (double That = initial_temp; That <= final_temp; That += temp_step)
+    {
+        //Initialize energy, magnetization and averages
+        E = M = 0;
+        T = abs(That*J/k);
+        average[0] = 0; average[1] = 0; average[2] = 0; average[3] = 0; average[4] = 0;
+        Ising L1 = Ising(J,n_spins,T);
+
+        //monte carlo loop
+        for (int cycles = myloop_begin; cycles <= myloop_end; cycles++)
+        {
+            L1.step_metropolis();
+            E = L1.get_energy();
+            M = L1.get_magnetization();
+            average[0] += E; average[1] += E*E; average[2] += M; average[3] += M*M; average[4] += abs(M);
+        }
+
+        //find total average
+        for( int i =0; i < 5; i++)
+        {
+
+            MPI_Reduce(&average[i], &total_average[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+        }
+
+        if ( my_rank == 0)
+        {
+
+            myfile << That << " " << n_spins << " " << mcs << " " << total_average[0]/mcs << " " << total_average[1]/mcs << " "
+                   << total_average[2]/mcs << " " << total_average[3]/mcs << " " << total_average[4]/mcs << endl;
+        }
+
+    }
+
+    myfile.close();
+
+    MPI_Finalize ();
+
+
+
+
+
+
+
+
+
+
+
+
     /*
     double k = 1.38064852e-23;
     double J = 1;
@@ -608,82 +694,7 @@ Variance sigma_squared = 3229.82
 __________________________________________________________________
 247446 -493.769 0.99835
 Computed variance = 3638.22
-*/
 
-    int idum;
-    int n_spins, mcs, my_rank, numprocs;
-    double average[5], total_average[5], initial_temp, final_temp, temp_step;
-
-
-    MPI_Init (&argc, &argv);
-    MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
-    MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
-
-    //Lattice size, cycles
-    n_spins = 40; mcs = 1000000; initial_temp = 2.20; final_temp = 2.40; temp_step = 0.005;
-
-    MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast (&final_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast (&temp_step, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-    int no_intervalls = mcs/numprocs;
-    int myloop_begin = my_rank*no_intervalls + 1;
-    int myloop_end = (my_rank+1)*no_intervalls;
-    if ( (my_rank == numprocs-1) &&( myloop_end < mcs) ) myloop_end = mcs;
-
-    //own seed to individual processors
-    idum = -1-my_rank;
-    srand(idum);
-    // random starting point
-
-    ofstream myfile;
-    myfile.open("L40.txt");
-
-
-    double T;
-    double k = 1.38064852e-23;
-    double J = 1;
-    double E;
-    double M;
-
-    //loop over temperatures
-    for (double That = initial_temp; That <= final_temp; That += temp_step)
-    {
-        //Initialize energy, magnetization and averages
-        E = M = 0;
-        T = abs(That*J/k);
-        average[0] = 0; average[1] = 0; average[2] = 0; average[3] = 0; average[4] = 0;
-        Ising L1 = Ising(J,n_spins,T);
-
-        //monte carlo loop
-        for (int cycles = myloop_begin; cycles <= myloop_end; cycles++)
-        {
-            L1.step_metropolis();
-            E = L1.get_energy();
-            M = L1.get_magnetization();
-            average[0] += E; average[1] += E*E; average[2] += M; average[3] += M*M; average[4] += abs(M);
-        }
-
-        //find total average
-        for( int i =0; i < 5; i++)
-        {
-
-            MPI_Reduce(&average[i], &total_average[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-        }
-
-        if ( my_rank == 0)
-        {
-
-            myfile << That << " " << n_spins << " " << mcs << " " << total_average[0]/mcs << " " << total_average[1]/mcs << " "
-                   << total_average[2]/mcs << " " << total_average[3]/mcs << " " << total_average[4]/mcs << endl;
-        }
-
-    }
-
-    myfile.close();
-
-    MPI_Finalize ();
 
 
     return 0;

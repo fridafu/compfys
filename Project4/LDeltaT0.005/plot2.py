@@ -63,7 +63,7 @@ legend(['L=40','L=60', 'L=80','L=100'])
 
 figure(2)
 xlabel('Temperature T[kK/J]')
-ylabel('Magnetization <|M|> [unitless]')
+ylabel('Magnetization <|M|> per spin [unitless]')
 plot(T,M_abs[0])
 plot(T,M_abs[1])
 plot(T,M_abs[2])
@@ -88,3 +88,10 @@ plot(T,sus_array[2])
 plot(T,sus_array[3])
 legend(['L=40','L=60', 'L=80','L=100'])
 show()
+
+A = matrix([[1, 1/100],[1, 1/80],[1,1/60],[1,1/40]])
+T = matrix([[2.275],[2.280],[2.285],[2.290]])
+
+x = A.getI() * T
+print(x)
+
