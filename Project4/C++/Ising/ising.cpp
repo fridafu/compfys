@@ -230,7 +230,7 @@ double Ising::magnetic_susceptibility()
     return (expM2/stepcount - expabsM*expabsM/(stepcount*stepcount))/(T*k);
 }
 void Ising::exp_vals(int steps)
-//calculates expectation values with steps steps.
+//calculates expectation values with 'steps' steps.
 {
 
     for (long int i = 0; i < steps; i++)
