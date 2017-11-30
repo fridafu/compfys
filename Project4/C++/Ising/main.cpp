@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
 
     //Lattice size, cycles
-    n_spins = 40; mcs = 1000000; initial_temp = 2.20; final_temp = 2.40; temp_step = 0.005;
+    n_spins = 20; mcs = 10000; initial_temp = 2.20; final_temp = 2.40; temp_step = 0.005;
 
     MPI_Bcast (&n_spins, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast (&initial_temp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -309,7 +309,7 @@ analytical X = 0.016043
 
     //d)
 
-    /*
+
     int L = 20;
 
     int initsteps = 100000;
@@ -320,8 +320,8 @@ analytical X = 0.016043
     double meanE = 0;
     double meanE2 = 0;
     double totP = 0;
-    ofstream myfile;
-    myfile.open("prob.txt");
+    ofstream myfile2;
+    myfile2.open("prob.txt");
 
     for (int i = 0; i < size(energy)(0); i++)
     {
@@ -340,15 +340,14 @@ analytical X = 0.016043
             cout << "P(" << energy(i) << ") = " << PE << endl;
             cout << "Variance sigma_squared = " << exp_vals(1) - exp_vals(0)*exp_vals(0) << endl;
             cout << "__________________________________________________________________" << endl;
-            myfile << energy(i) << " " << PE << endl;
+            myfile2 << energy(i) << " " << PE << endl;
          }
     }
-    myfile.close();
+    myfile2.close();
     cout << meanE2 << " " << meanE << " " << totP << endl;
     cout << "Computed variance = " << meanE2 - meanE*meanE << endl;
-    */
-
-
+    return 0;
+}
 /*
  * T = 1
 Terminal output:
@@ -700,3 +699,4 @@ Computed variance = 3638.22
     return 0;
 
 }
+*/

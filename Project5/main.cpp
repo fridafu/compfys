@@ -1,41 +1,41 @@
-using namespace arma; using namespace std;
 #include "armadillo"
+#include "transactions.h"
 #include <random>
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
+using namespace arma; using namespace std;
 
 
 int main()
 {
     int N = 500; // number of agents
     double m0 = 2; // initial money
-    double lambda = atof(argv[1]); // 0.25
-    //double alpha = atof(argv[2]); 0.0
-    //double gamma = atof(argv[3]); 0.5
+    double lambda = 0.25;//atof(argv[1]); // 0.25
+    double alpha = 0.0;//atof(argv[2]); //0.0
+    double gamma = 0.5; //atof(argv[3]); 0.5
     int n_sims = 1e3; // number of simulations
-    int sims_done = 0;
-    Transactions T = Transactions(transactions, m, m0, N, lambda)
-    vec m_dist = T.make_m_array(N, m0);
+    int n_bins = int(m0*30/0.05);//???
 
-    for(i = 0; i < 1e3; i++){
-        cout << "Simulation " << sims_done << endl;
-        int** transactions = T.make_trans_matrix(N);
-        vec m = T.make_m_array(N, m0);
-        vec m2 = T.do_trans(transactions, m, m0, N, lambda);
-
-        // sum over results
-        for (int i = 0; i < N; i++){
-            m_dist(i) += m2(i);
+    // MAKE A HISTOGRAM VECTOR
+    vec histbins = linspace(0,m0*30,n_bins);
+    vec hist_total = zeros(n_bins);
+    // make transactions happen between agents for the number of wanted experiments
+    for(int j = 0; j < n_sims; j++){
+        Transactions T(m0, N, lambda, gamma, alpha, n_bins,histbins);
+        T.do_trans(1e5); // do_trans(transactions, m, N, lambda, gamma, alpha)
+        uvec hist = T.getHistogram(histbins);
+        cout << "Simulation " << j+1 << endl;
+        for(int i = 0; i < n_bins; i++){
+            hist_total(i) += hist(i);
         }
-
-    sims_done += 1;
     }
 
-    for (int i = 0; i < N; i++){
-            m_dist(i) /= n_sims;
-    }
+    Transactions T_hist(m0, N, lambda, gamma, alpha, n_bins, histbins);
+    hist_total /= n_sims;
+    // OUTPUT HISTOGRAM
+    T_hist.write_to_file(hist_total);
 
-    write_to_file(finalmoneydist,N);
 }
+
+
 

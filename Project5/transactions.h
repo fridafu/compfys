@@ -4,23 +4,27 @@
 #include <random>
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
+
 
 using namespace arma;
 using namespace std;
 
-class Transactions(transactions, m, m0, N, lambda, gamma, alpha)
-{
+class Transactions{//(mat transactions, vec m,vec m0, int N, double lambda, double gamma,double alpha){ //hvorfor sendes det inn i klassen?
 public:
+    Transactions(double m0, int N, double lambda, double gamma, double alpha, int n_bins, vec hist_bins);
+    void do_trans(int n_trans);
+    void write_to_file(vec histogram);
 
-    vec do_trans(transactions, m, N, lambda, gamma, alpha, m0);
-
-    vec make_m_array(N, m_0);
-
-    void make_trans_matrix(N);
-
-    void write_to_file(N);
-
+    vec m;
+    mat transactions_matrix;
+    int m_N;
+    double m_lambda;
+    double m_alpha;
+    double m_gamma;
+    int bins;
+    uvec getHistogram(vec linbins);
+    vec bin_interval;
 private:
 
-}
+};
+#endif
