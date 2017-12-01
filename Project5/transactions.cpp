@@ -16,7 +16,15 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         // choose random agents i and j
         int i = rand() % m_N; int j = rand() % m_N;
         double r = doubleRNG(gen);
-        p_ij = pow(abs(m(i)-m(j)),-m_alpha);
+        // add probability to do transactions with agants with similar funds
+
+        //p_ij = pow(abs(m(i)-m(j)),-m_alpha);
+        // add probability to do transactions with agents one has done transactions with before
+        double c_ij = transactions_matrix(i,j);
+
+        p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
+        transactions_matrix(i,j) = c_ij + 1;
+
         if(i != j && p_ij>r){
             double epsilon = doubleRNG(gen); //create a random double [0,1]
             sum_ij = m(i) + m(j);
@@ -33,6 +41,7 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
             }
         }
     }
+    // transactions_matrix.print();
 }
 
 uvec Transactions::getHistogram(vec linbins){
@@ -45,7 +54,11 @@ uvec Transactions::getHistogram(vec linbins){
 
 void Transactions::write_to_file(vec histogram){
     ofstream myfile;
-    myfile.open("hist_alpha05_N500.dat");
+    myfile.open("hist_alpha10_N1000_gamma1_1e5transactions.dat");
+    myfile << "#alpha=" << m_alpha << endl;
+    myfile << "#lambda=" << m_lambda << endl;
+    myfile << "#gamma=" << m_gamma << endl;
+
     for (int i = 0; i < bins; i++){
         myfile << histogram(i) << " " << bin_interval(i) << endl;
     }
