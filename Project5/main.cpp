@@ -8,11 +8,11 @@ using namespace arma; using namespace std;
 
 int main()
 {
-    int N = 500; // number of agents
+    int N = 1000; // number of agents
     double m0 = 2; // initial money
-    double lambda = 0.0;//atof(argv[1]); // 0.25
+    double lambda = 0.25;//atof(argv[1]); // 0.25
     double alpha = 1.0;//atof(argv[2]); //0.0
-    double gamma = 0.5; //atof(argv[3]); 0.5
+    double gamma = 1.0; //atof(argv[3]); 0.5
     int n_sims = 1e3; // number of simulations
     int n_bins = int(m0*30/0.05);//???
 
@@ -22,7 +22,7 @@ int main()
     // make transactions happen between agents for the number of wanted experiments
     for(int j = 0; j < n_sims; j++){
         Transactions T(m0, N, lambda, gamma, alpha, n_bins,histbins);
-        T.do_trans(1e7); // do_trans(transactions, m, N, lambda, gamma, alpha)
+        T.do_trans(1e5); // do_trans(transactions, m, N, lambda, gamma, alpha)
         uvec hist = T.getHistogram(histbins);
         cout << "Simulation " << j+1 << endl;
         for(int i = 0; i < n_bins; i++){
