@@ -10,11 +10,14 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
     mt19937 gen(rd());
     uniform_real_distribution<double> doubleRNG(0,1);
     double sum_ij;
+    double p_ij;
     // perform 10^7 transactions ideally
     while(trans_done < n_trans){
         // choose random agents i and j
         int i = rand() % m_N; int j = rand() % m_N;
-        if(i != j){
+        double r = doubleRNG(gen);
+        p_ij = pow(abs(m(i)-m(j)),-m_alpha);
+        if(i != j && p_ij>r){
             double epsilon = doubleRNG(gen); //create a random double [0,1]
             sum_ij = m(i) + m(j);
             // money of the two agents are changed via a random transaction decided by epsilon
@@ -24,6 +27,9 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
             // check if sum is equal
             if (sum_ij - m(i) - m(j) > 1e-8){
                 cout << "transaction did not conserve money" << endl;
+            if (m(i)<0 || m(j)<0){
+                cout << "agent left in debt" << endl;
+            }
             }
         }
     }
@@ -39,7 +45,7 @@ uvec Transactions::getHistogram(vec linbins){
 
 void Transactions::write_to_file(vec histogram){
     ofstream myfile;
-    myfile.open("hist.dat");
+    myfile.open("hist_alpha05_N500.dat");
     for (int i = 0; i < bins; i++){
         myfile << histogram(i) << " " << bin_interval(i) << endl;
     }
