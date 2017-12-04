@@ -11,9 +11,9 @@ int main()
     // SET INITIAL CONDITIONS
     int N = 1000; // number of agents
     double m0 = 2; // initial money
-    double lambda = 0.25;//atof(argv[1]); // 0.25
-    double alpha = 2.0;//atof(argv[2]); //0.0
-    double gamma = 0.0; //atof(argv[3]); 0.5
+    double lambda = 0.25;// saving factor
+    double alpha = 2.0;// closeness in funds factor
+    double gamma = 0.0; // previously done transactions factor
     int n_sims = 1e3; // number of simulations
     int n_bins = int(m0*30/0.05);//income bins array
 
