@@ -21,9 +21,8 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         //p_ij = pow(abs(m(i)-m(j)),-m_alpha);
         // add probability to do transactions with agents one has done transactions with before
         double c_ij = transactions_matrix(i,j);
-
         p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
-        transactions_matrix(i,j) = c_ij + 1;
+        transactions_matrix(i,j) = c_ij + 1; // update number of transactions done for the agent i & j
 
         if(i != j && p_ij>r){
             double epsilon = doubleRNG(gen); //create a random double [0,1]
@@ -33,12 +32,12 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
             m(j) = m_lambda*m(j) + (1.0-epsilon)*(1.0-m_lambda)*sum_ij;
             trans_done += 1;
             // check if sum is equal
-            if (sum_ij - m(i) - m(j) > 1e-8){
-                cout << "transaction did not conserve money" << endl;
-            if (m(i)<0 || m(j)<0){
-                cout << "agent left in debt" << endl;
-            }
-            }
+            //if (sum_ij - m(i) - m(j) > 1e-8){
+            //    cout << "transaction did not conserve money" << endl;
+            //if (m(i)<0 || m(j)<0){// check if agents are left in debt
+            //    cout << "agent left in debt" << endl;
+            //}
+            //}
         }
     }
     // transactions_matrix.print();
@@ -53,8 +52,9 @@ uvec Transactions::getHistogram(vec linbins){
 
 
 void Transactions::write_to_file(vec histogram){
+    // write to file, including parameters for the run
     ofstream myfile;
-    myfile.open("hist_alpha10_N1000_gamma1_1e5transactions.dat");
+    myfile.open("hist_alpha20_N1000_lam025.dat");
     myfile << "#alpha=" << m_alpha << endl;
     myfile << "#lambda=" << m_lambda << endl;
     myfile << "#gamma=" << m_gamma << endl;
@@ -64,7 +64,6 @@ void Transactions::write_to_file(vec histogram){
     }
     myfile.close();
 }
-
 
 
 Transactions::Transactions(double m0, int N, double lambda, double gamma, double alpha, int n_bins, vec hist_bins){
