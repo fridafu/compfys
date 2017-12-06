@@ -14,7 +14,7 @@ public:
     Transactions(double m0, int N, double lambda, double gamma, double alpha, int n_bins, vec hist_bins);
     void do_trans(int n_trans); // do transactions between agents
     void write_to_file(vec histogram); // function to write to file
-
+    double m_0;
     vec m;
     mat transactions_matrix;
     int m_N;
@@ -24,6 +24,7 @@ public:
     int bins;
     uvec getHistogram(vec linbins); // output income distribution histogram
     vec bin_interval;
+
 private:
 
 };

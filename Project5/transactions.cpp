@@ -1,5 +1,7 @@
 #include "transactions.h"
 
+
+
 void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa sendes inn?
 
     // number of transactions: at least 10^7
@@ -11,6 +13,7 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
     uniform_real_distribution<double> doubleRNG(0,1);
     double sum_ij;
     double p_ij;
+    double norm = 0.1*m_N;
     // perform 10^7 transactions ideally
     while(trans_done < n_trans){
         // choose random agents i and j
@@ -21,10 +24,21 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         //p_ij = pow(abs(m(i)-m(j)),-m_alpha);
         // add probability to do transactions with agents one has done transactions with before
         double c_ij = transactions_matrix(i,j);
-        p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
+        if (m(i) == m(j))
+        {
+            p_ij = 1;
+        }
+        else
+        {
+            p_ij =  norm*pow(fabs((m(i)-m(j))/double(m_0)),-m_alpha);
+
+        }
+
         transactions_matrix(i,j) = c_ij + 1; // update number of transactions done for the agent i & j
+        /*
         p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
         transactions_matrix(i,j) = c_ij + 1;
+        */
 
         if(i != j && p_ij>r){
             double epsilon = doubleRNG(gen); //create a random double [0,1]
@@ -77,4 +91,5 @@ Transactions::Transactions(double m0, int N, double lambda, double gamma, double
     transactions_matrix = zeros(N,N);
     bins = n_bins;
     bin_interval = hist_bins;
+    m_0 = m0;
 }
