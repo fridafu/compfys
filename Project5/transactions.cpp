@@ -24,6 +24,7 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         //p_ij = pow(abs(m(i)-m(j)),-m_alpha);
         // add probability to do transactions with agents one has done transactions with before
         double c_ij = transactions_matrix(i,j);
+<<<<<<< HEAD
         if (m(i) == m(j))
         {
             p_ij = 1;
@@ -40,6 +41,12 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         transactions_matrix(i,j) = c_ij + 1;
         */
 
+=======
+        // update number of transactions done for the agent i & j
+        p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
+        transactions_matrix(i,j) = c_ij + 1;
+        transactions_matrix(j,i) = c_ij + 1;
+>>>>>>> 40be5022e8a9aaf3104442a825cdbcc427fe7d25
         if(i != j && p_ij>r){
             double epsilon = doubleRNG(gen); //create a random double [0,1]
             sum_ij = m(i) + m(j);

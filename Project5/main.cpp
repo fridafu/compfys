@@ -16,10 +16,17 @@ int main(int argc, char* argv[])
 
     // SET INITIAL CONDITIONS
     int N = 1000; // number of agents
+<<<<<<< HEAD
     double m0 = 1000; // initial money
     double lambda = 0.25;//atof(argv[1]); // 0.25
     double alpha = 2.0;//atof(argv[2]); //0.0
     double gamma = 0.0; //atof(argv[3]); 0.5
+=======
+    double m0 = 2; // initial money
+    double lambda = 0.25;// saving factor
+    double alpha = 2.0;// closeness in funds factor
+    double gamma = 0.0; // previously done transactions factor
+>>>>>>> 40be5022e8a9aaf3104442a825cdbcc427fe7d25
     int n_sims = 1e3; // number of simulations
     int n_bins = int(m0*1);//income bins array
     int n_trans = 1e6;
