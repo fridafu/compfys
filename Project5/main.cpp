@@ -18,8 +18,8 @@ int main(int argc, char* argv[])
     int N = 1000; // number of agents
     double m0 = 100; // initial money
     double lambda = 0;//atof(argv[1]); // 0.25
-    double alpha = 0.5;//atof(argv[2]); //0.0
-    double gamma = 1.; //atof(argv[3]); 0.5
+    double alpha = 2.;//atof(argv[2]); //0.0
+    double gamma = 0; //atof(argv[3]); 0.5
     int n_sims = 1e3; // number of simulations
     int n_bins = int(5000);//income bins array
     int n_trans = 1e7;
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     vec hist_TOT = zeros(n_bins);
 
     ofstream myfile;
-    myfile.open("Dalpha05_lambda0_N1000.dat");
+    myfile.open("Dalpha2_lambda0_N1000.dat");
 
     int my_rank, numprocs, idum;
 
