@@ -20,19 +20,17 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         int i = rand() % m_N; int j = rand() % m_N;
         double r = doubleRNG(gen);
         // add probability to do transactions with agants with similar funds
-
         //p_ij = pow(abs(m(i)-m(j)),-m_alpha);
         // add probability to do transactions with agents one has done transactions with before
         double c_ij = transactions_matrix(i,j);
-<<<<<<< HEAD
-        if (m(i) == m(j))
+
+        if (m(i) != m(j))
         {
-            p_ij = 1;
+            p_ij =  norm*pow(fabs((m(i)-m(j))/double(m_0)),-m_alpha);
         }
         else
         {
-            p_ij =  norm*pow(fabs((m(i)-m(j))/double(m_0)),-m_alpha);
-
+            p_ij = 1;
         }
 
         transactions_matrix(i,j) = c_ij + 1; // update number of transactions done for the agent i & j
@@ -41,12 +39,11 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         transactions_matrix(i,j) = c_ij + 1;
         */
 
-=======
+
         // update number of transactions done for the agent i & j
-        p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
-        transactions_matrix(i,j) = c_ij + 1;
-        transactions_matrix(j,i) = c_ij + 1;
->>>>>>> 40be5022e8a9aaf3104442a825cdbcc427fe7d25
+
+
+
         if(i != j && p_ij>r){
             double epsilon = doubleRNG(gen); //create a random double [0,1]
             sum_ij = m(i) + m(j);
@@ -69,7 +66,7 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
 uvec Transactions::getHistogram(vec linbins){
     //double maxmoney = m_N*m0;
     uvec histogram = hist(m, linbins);
-    //cout << histogram << endl;
+
     return histogram;
 }
 
@@ -77,14 +74,16 @@ uvec Transactions::getHistogram(vec linbins){
 void Transactions::write_to_file(vec histogram){
     // write to file, including parameters for the run
     ofstream myfile;
-    myfile.open("hist_alpha20_N1000_lam025.dat");
+    myfile.open("Dhist_alpha15_N500_lam0.dat");
     myfile << "#alpha=" << m_alpha << endl;
     myfile << "#lambda=" << m_lambda << endl;
     myfile << "#gamma=" << m_gamma << endl;
 
-    for (int i = 0; i < bins; i++){
+    for (int i = 0; i < bins; i++)
+    {
         myfile << histogram(i) << " " << bin_interval(i) << endl;
     }
+
     myfile.close();
 }
 

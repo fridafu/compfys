@@ -7,13 +7,20 @@ files = ['test.dat']
 dtype1 = [('counts', 'f8'), ('m','f8')]
 # read in data
 hist = loadtxt(files[0], dtype=dtype1)
-print(hist['m'])
-print(hist['counts'])
 
+
+y = hist['counts']
+ddx = hist['m'][2] - hist['m'][1]
+
+
+area = trapz(y, dx=ddx)
 
 figure()
 binno = size(hist['m'])
-print(binno)
+
+
+print(trapz(y, dx=ddx))
+
 plot(hist['m'], hist['counts'])
 #histogram(hist['m'], bins=binno)#hist['counts'])
 

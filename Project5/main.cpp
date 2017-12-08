@@ -16,24 +16,22 @@ int main(int argc, char* argv[])
 
     // SET INITIAL CONDITIONS
     int N = 1000; // number of agents
-
     double m0 = 1000; // initial money
     double lambda = 0.25;//atof(argv[1]); // 0.25
-    double alpha = 2.0;//atof(argv[2]); //0.0
+    double alpha = 2.;//atof(argv[2]); //0.0
     double gamma = 0.0; //atof(argv[3]); 0.5
-
     int n_sims = 1e3; // number of simulations
-    int n_bins = int(m0*1);//income bins array
-    int n_trans = 1e6;
+    int n_bins = int(m0*30);//income bins array
+    int n_trans = 1e7;
 
     // MAKE A HISTOGRAM VECTOR
-    vec histbins = linspace(0,m0*30,n_bins+1);
+    vec histbins = linspace(0,N*m0,n_bins + 1);
     vec hist_total = zeros(n_bins);
     uvec hist;
     vec hist_TOT = zeros(n_bins);
 
     ofstream myfile;
-    myfile.open("test.dat");
+    myfile.open("D_N1000_alpha2_lambda025.dat");
 
     int my_rank, numprocs, idum;
 
@@ -44,12 +42,9 @@ int main(int argc, char* argv[])
          T.do_trans(n_trans);
     }
 
-
     MPI_Init (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
-
-
 
     int no_intervalls = n_sims/numprocs;
     int myloop_begin = my_rank*no_intervalls + 1;
@@ -57,18 +52,12 @@ int main(int argc, char* argv[])
     if ( (my_rank == numprocs-1) &&( myloop_end < n_sims) ) myloop_end = n_sims;
     MPI_Bcast (&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-
-
     //own seed to individual processors
     idum = -1-my_rank;
     srand(idum);
     // random starting point
 
-
-
     // make transactions happen between agents for the number of wanted experiments
-
-
     for(int cycles = myloop_begin; cycles <= myloop_end; cycles++)
     {
 
