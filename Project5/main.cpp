@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     double m0 = 100; // initial money
     double lambda = 0;//atof(argv[1]); // 0.25
     double alpha = 1.;//atof(argv[2]); //0.0
-    double gamma = 0; //atof(argv[3]); 0.5
+    double gamma = 4.; //atof(argv[3]); 0.5
     int n_sims = 1e3; // number of simulations
     int n_bins = int(5000);//income bins array
     int n_trans = 1e7;
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     vec hist_TOT = zeros(n_bins);
 
     ofstream myfile;
-    myfile.open("Ealpha1_lambda0_gamma_0_N1000.dat");
+    myfile.open("Ealpha1_lambda0_gamma_4_N1000.dat");
 
     int my_rank, numprocs, idum;
 
