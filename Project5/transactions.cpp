@@ -29,40 +29,25 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
         i = rand() % m_N; j = rand() % m_N;
         r = doubleRNG(gen);
         // add probability to do transactions with agants with similar funds
-        //p_ij = pow(abs(m(i)-m(j)),-m_alpha);
-        // add probability to do transactions with agents one has done transactions with before
-        //c_ij = transactions_matrix(i,j);
 
         if (m(i) != m(j))
         {
-            p_ij =  1000*pow(fabs((m(i)-m(j))/dm),-m_alpha); //*pow((c_ij +1)/double(max_cij),m_gamma);
+            p_ij =  1000*pow(fabs((m(i)-m(j))/dm),-m_alpha)*pow((c_ij +1)/double(max_cij),m_gamma);
         }
         else
         {
             p_ij = 1;
         }
 
-
-
-        /*
-        p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
-        transactions_matrix(i,j) = c_ij + 1;
-        */
-
-
-        // update number of transactions done for the agent i & j
-
-
-
         if(i != j && p_ij>r){
-            /*
+
             transactions_matrix(i,j) = c_ij + 1; // update number of transactions done for the agent i & j
             transactions_matrix(j,i) = c_ij + 1;
             if (c_ij + 1 > max_cij)
             {
                 max_cij = c_ij + 1;
             }
-            */
+
             epsilon = doubleRNG(gen); //create a random double [0,1]
             sum_ij = m(i) + m(j);
             // money of the two agents are changed via a random transaction decided by epsilon
