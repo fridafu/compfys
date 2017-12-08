@@ -13,15 +13,15 @@ y = hist['counts']
 ddx = hist['m'][2] - hist['m'][1]
 
 
-area = trapz(y, dx=ddx)
+
 
 figure()
 binno = size(hist['m'])
 
 
-print(trapz(y, dx=ddx))
 
-plot(hist['m'], hist['counts'])
+
+plot(hist['m'], y)
 #histogram(hist['m'], bins=binno)#hist['counts'])
 
 show()

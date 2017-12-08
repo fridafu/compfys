@@ -13,27 +13,37 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
     uniform_real_distribution<double> doubleRNG(0,1);
     double sum_ij;
     double p_ij;
-    double norm = 0.1*m_N;
+    double norm = 1/pow(400, m_alpha);
+    int max_cij = 1;
+    double max_pij = 1;
+    double c_ij;
+    double epsilon;
+    int i;
+    int j;
+    double r;
+    double dm = 1./m_0;
     // perform 10^7 transactions ideally
-    while(trans_done < n_trans){
+    while(trans_done < n_trans)
+    {
         // choose random agents i and j
-        int i = rand() % m_N; int j = rand() % m_N;
-        double r = doubleRNG(gen);
+        i = rand() % m_N; j = rand() % m_N;
+        r = doubleRNG(gen);
         // add probability to do transactions with agants with similar funds
         //p_ij = pow(abs(m(i)-m(j)),-m_alpha);
         // add probability to do transactions with agents one has done transactions with before
-        double c_ij = transactions_matrix(i,j);
+        //c_ij = transactions_matrix(i,j);
 
         if (m(i) != m(j))
         {
-            p_ij =  norm*pow(fabs((m(i)-m(j))/double(m_0)),-m_alpha);
+            p_ij =  1000*pow(fabs((m(i)-m(j))/dm),-m_alpha); //*pow((c_ij +1)/double(max_cij),m_gamma);
         }
         else
         {
             p_ij = 1;
         }
 
-        transactions_matrix(i,j) = c_ij + 1; // update number of transactions done for the agent i & j
+
+
         /*
         p_ij = pow(abs(m(i)-m(j)),-m_alpha)*pow((c_ij +1),m_gamma);
         transactions_matrix(i,j) = c_ij + 1;
@@ -45,12 +55,21 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
 
 
         if(i != j && p_ij>r){
-            double epsilon = doubleRNG(gen); //create a random double [0,1]
+            /*
+            transactions_matrix(i,j) = c_ij + 1; // update number of transactions done for the agent i & j
+            transactions_matrix(j,i) = c_ij + 1;
+            if (c_ij + 1 > max_cij)
+            {
+                max_cij = c_ij + 1;
+            }
+            */
+            epsilon = doubleRNG(gen); //create a random double [0,1]
             sum_ij = m(i) + m(j);
             // money of the two agents are changed via a random transaction decided by epsilon
             m(i) = m_lambda*m(i) + epsilon*(1.0-m_lambda)*sum_ij;
             m(j) = m_lambda*m(j) + (1.0-epsilon)*(1.0-m_lambda)*sum_ij;
             trans_done += 1;
+
             // check if sum is equal
             //if (sum_ij - m(i) - m(j) > 1e-8){
             //    cout << "transaction did not conserve money" << endl;
@@ -60,6 +79,8 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
             //}
         }
     }
+
+
     // transactions_matrix.print();
 }
 

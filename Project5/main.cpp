@@ -16,22 +16,22 @@ int main(int argc, char* argv[])
 
     // SET INITIAL CONDITIONS
     int N = 1000; // number of agents
-    double m0 = 1000; // initial money
-    double lambda = 0.25;//atof(argv[1]); // 0.25
+    double m0 = 100; // initial money
+    double lambda = 0;//atof(argv[1]); // 0.25
     double alpha = 2.;//atof(argv[2]); //0.0
-    double gamma = 0.0; //atof(argv[3]); 0.5
+    double gamma = 1.; //atof(argv[3]); 0.5
     int n_sims = 1e3; // number of simulations
-    int n_bins = int(m0*30);//income bins array
+    int n_bins = int(1000);//income bins array
     int n_trans = 1e7;
 
     // MAKE A HISTOGRAM VECTOR
-    vec histbins = linspace(0,N*m0,n_bins + 1);
+    vec histbins = linspace(0,1000,n_bins + 1);
     vec hist_total = zeros(n_bins);
     uvec hist;
     vec hist_TOT = zeros(n_bins);
 
     ofstream myfile;
-    myfile.open("D_N1000_alpha2_lambda025.dat");
+    myfile.open("test2.dat");
 
     int my_rank, numprocs, idum;
 
@@ -41,6 +41,8 @@ int main(int argc, char* argv[])
     {
          T.do_trans(n_trans);
     }
+
+    cout << "equilib reached" << endl;
 
     MPI_Init (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
@@ -63,6 +65,7 @@ int main(int argc, char* argv[])
 
         T.do_trans(n_trans); // do_trans(transactions, m, N, lambda, gamma, alpha)
 
+        cout << cycles << endl;
         hist = T.getHistogram(histbins);
 
         for (int i = 0; i < n_bins; i++)
