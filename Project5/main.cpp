@@ -15,23 +15,23 @@ int main(int argc, char* argv[])
 
 
     // SET INITIAL CONDITIONS
-    int N = 1000; // number of agents
+    int N = 500; // number of agents
     double m0 = 100; // initial money
     double lambda = 0;//atof(argv[1]); // 0.25
     double alpha = 2.;//atof(argv[2]); //0.0
     double gamma = 1.; //atof(argv[3]); 0.5
     int n_sims = 1e3; // number of simulations
-    int n_bins = int(1000);//income bins array
+    int n_bins = int(5000);//income bins array
     int n_trans = 1e7;
 
     // MAKE A HISTOGRAM VECTOR
-    vec histbins = linspace(0,1000,n_bins + 1);
+    vec histbins = linspace(0,5000,n_bins + 1);
     vec hist_total = zeros(n_bins);
     uvec hist;
     vec hist_TOT = zeros(n_bins);
 
     ofstream myfile;
-    myfile.open("test2.dat");
+    myfile.open("Dalpha2_lambda0_N500.dat");
 
     int my_rank, numprocs, idum;
 
