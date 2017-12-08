@@ -3,7 +3,7 @@ from pylab import *
 from math import gamma
 # path = '/local/narga/os187/sprocess/'
 
-files = ['Dalpha1_lambda025_N1000.dat', 'Ealpha1_lambda025_gamma_1_N1000.dat','Ealpha1_lambda025_gamma_2_N1000.dat','Ealpha1_lambda025_gamma_3_N1000.dat','Ealpha1_lambda025_gamma_4_N1000.dat']
+files = ['Dalpha2_lambda025_N1000.dat', 'Ealpha2_lambda025_gamma_1_N1000.dat','Ealpha2_lambda025_gamma_2_N1000.dat','Ealpha2_lambda025_gamma_3_N1000.dat','Ealpha2_lambda025_gamma_4_N1000.dat']
 # histogram for money distribution
 dtype1 = [('counts', 'f8'), ('m','f8')]
 # read in data
