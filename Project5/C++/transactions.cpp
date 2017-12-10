@@ -54,19 +54,8 @@ void Transactions::do_trans(int n_trans = 1e4){// burde ikke trenge m0 til aa se
             m(i) = m_lambda*m(i) + epsilon*(1.0-m_lambda)*sum_ij;
             m(j) = m_lambda*m(j) + (1.0-epsilon)*(1.0-m_lambda)*sum_ij;
             trans_done += 1;
-
-            // check if sum is equal
-            //if (sum_ij - m(i) - m(j) > 1e-8){
-            //    cout << "transaction did not conserve money" << endl;
-            //if (m(i)<0 || m(j)<0){// check if agents are left in debt
-            //    cout << "agent left in debt" << endl;
-            //}
-            //}
         }
     }
-
-
-    // transactions_matrix.print();
 }
 
 uvec Transactions::getHistogram(vec linbins){
